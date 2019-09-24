@@ -1,15 +1,14 @@
 request = require('request');
 cheerio = require('cheerio');
 fs = require('fs');
+mailer = require('./mailer.js');
+
 
 var before_latest = 0;
-
-
-
 var latest = 0;
 
 function check_new_post() {
-  before_latest = fs.readFileSync('./Storage/latest.txt', 'utf8');
+  before_latest = fs.readFileSync('./storage/latest.txt', 'utf8');
 
   request('http://www.hansung.ac.kr/web/www/1323', function(err, res, body) {
     if(err) throw err;
@@ -31,7 +30,7 @@ function check_new_post() {
       if(idx != '') {
         if(isLatest) {
           latest = idx;
-          fs.writeFile('./Storage/latest.txt', latest, 'utf8', function(err) {
+          fs.writeFile('./storage/latest.txt', latest, 'utf8', function(err) {
             if(err) throw err;
           })
         } isLatest = false;
@@ -41,7 +40,9 @@ function check_new_post() {
           subject = $(this).find('td.subject > a');
           title = subject.text();
           link = subject.attr('href');
-          console.log(idx, title, link)
+          console.log(idx, title, link);
+          mailer.sendNotification('yunbin@hansung.ac.kr', title, link);
+
         } //new post will be handled here.
       }// filter new post
 
@@ -50,6 +51,5 @@ function check_new_post() {
   });
 }
 
-//check_new_post();
-
-setInterval(check_new_post, 1 * 60 * 1000)
+check_new_post();
+setInterval(check_new_post, 0.5 * 60 * 1000)
