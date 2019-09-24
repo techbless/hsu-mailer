@@ -52,4 +52,4 @@ function check_new_post() {
 }
 
 check_new_post();
-setInterval(check_new_post, 0.5 * 60 * 1000)
+setInterval(check_new_post, 10 * 60 * 1000)
