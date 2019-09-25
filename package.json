@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "pm2 start index.js  --name 'hsu-mailer' -o ./log/mailer.log -e ./log/mailer-err.log"
   },
   "author": "",
   "license": "ISC",
