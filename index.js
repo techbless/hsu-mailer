@@ -2,23 +2,40 @@ request = require('request');
 cheerio = require('cheerio');
 fs = require('fs');
 mailer = require('./mailer.js');
-http = require('http');
-/*
-var app = http.createServer(function(req, res) {
-  var url = req.url;
-  if(url == '/') {
-    url = '/index.html'
-  }
-  if(url == '/favicon.ico'){
-    return res.writeHead(404);
-  }
+conn = require('./db');
+express = require('express');
+var bodyParser = require('body-parser');
 
-  res.writeHead(200);
-  res.end(fs.readFileSync(__dirname + url));
+var app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : true}));
+
+app.get('/register/email', function(req, res) {
+  var sig = req.query.sig;
+  var code = sig.split('*')[0];
+  var email = sig.split('*')[1];
+
+  var sql = 'UPDATE hsu_list SET email=? WHERE code=?';
+  var params = [email, code];
+
+  conn.query(sql, params, function(err, results) {
+    if(err) {
+      throw err;
+    } else {
+      if(results.affectedRows >= 1) {
+        res.send("이메일 등록에 성공하였습니다.");
+      } else {
+        res.send("인증코드를 확인해주세요.");
+      }
+    }
+  });
 });
 
-app.listen(3000);
-*/
+app.listen(3550, function() {
+  console.log('listen on port 3000!');
+});
+
 var before_latest = 0;
 var latest = 0;
 
@@ -55,7 +72,7 @@ function check_new_post() {
           title = subject.text();
           link = subject.attr('href');
           console.log(getDate(), idx, title, link);
-          mailer.sendNotification('yunbin@hansung.ac.kr', title, link);
+          mailer.sendNotification(title, link);
 
         } //new post will be handled here.
       }// filter new post
