@@ -32,6 +32,19 @@ app.get('/register/email', function(req, res) {
   });
 });
 
+app.get('/send/testmail', function(req, res) {
+  var bcc = req.query.bcc;
+  var pw = req.query.pw;
+
+  if(pw == 'as12') {
+    mailer.sendTestMail(bcc);
+    res.send('Done.')
+  } else {
+    res.send('Your are not admin.')
+  }
+
+});
+
 app.listen(3550, function() {
   console.log('listen on port 3000!');
 });
