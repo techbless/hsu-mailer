@@ -49,6 +49,8 @@ app.listen(3550, function() {
   console.log('listen on port 3000!');
 });
 
+//----------- Upper web, Lower service -----------
+
 var before_latest = 0;
 var latest = 0;
 
@@ -100,5 +102,18 @@ function getDate(){
     return now.toLocaleString()+" =>  ";
 }
 
+function updateLatestIdxLog() {
+  latest = fs.readFileSync('./storage/latest.txt', 'utf8');
+  newlog = getDate() + latest + '\r\n';
+  fs.appendFileSync('./log/latest_idx.log', newlog);
+}
+
+function getDate(){
+    var now = new Date();
+    return now.toLocaleString()+" =>  ";
+}
+
+updateLatestIdxLog();
 check_new_post();
+setInterval(updateLatestIdxLog, 5 * 60 * 1000)
 setInterval(check_new_post, 10 * 60 * 1000)
