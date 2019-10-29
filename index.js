@@ -5,6 +5,8 @@ mailer = require('./mailer.js');
 conn = require('./db');
 express = require('express');
 var bodyParser = require('body-parser');
+const puppeteer = require('puppeteer')
+const URL = 'http://www.hansung.ac.kr/web/www/1323'
 
 var app = express();
 
@@ -54,8 +56,63 @@ app.listen(3550, function() {
 var before_latest = 0;
 var latest = 0;
 
+
 function check_new_post() {
+  console.log(getDate(), 'Start Checking : ' + res.statusCode);
   before_latest = fs.readFileSync('./storage/latest.txt', 'utf8');
+  latest = 0
+  puppeteer.launch({ headless: true, args: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox'
+  ]}).then(async browser => {
+    const page = await browser.newPage();
+    await page.setViewport({width: 320, height: 600})
+    await page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 9_0_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A404 Safari/601.1')
+
+    await page.goto(URL, {waitUntil: 'networkidle0'})
+    await page.waitForSelector('tr')
+    await page.addScriptTag({url: 'https://code.jquery.com/jquery-3.2.1.min.js'})
+
+    const result = await page.evaluate(() => {
+
+      try {
+        isLatest = true;
+        $('tr').each(function(index, element) {
+          idx = $(this)
+                .find('td')
+                .first()
+                .text()
+                .trim();// Get a each post-id from the webpage.
+
+          if(idx != '') {
+            if(isLatest) {
+              latest = idx;
+              fs.writeFile('./storage/latest.txt', latest, 'utf8', function(err) {
+                if(err) throw err;
+              })
+            } isLatest = false;
+
+    
+            if(idx > before_latest) {
+              subject = $(this).find('td.subject > a');
+              title = subject.text();
+              link = subject.attr('href');
+              console.log(getDate(), idx, title, link);
+              mailer.sendNotification(title, link);
+
+            } //new post will be handled here.
+          }// filter new post
+
+        })
+        console.log(getDate(), 'End Checking')
+      } catch(err) {
+         throw err
+      }
+    }
+  )
+
+  await browser.close();
+
 
   request('http://www.hansung.ac.kr/web/www/1323', function(err, res, body) {
     if(err) throw err;
@@ -72,7 +129,7 @@ function check_new_post() {
       .first()
       .text()
       .trim();// Get a each post-id from the webpage.
-
+      console.log("idx", idx)
       if(idx != '') {
         if(isLatest) {
           latest = idx;
@@ -95,6 +152,7 @@ function check_new_post() {
     })
     console.log(getDate(), 'End Checking.')
   });
+
 }
 
 function getDate(){
