@@ -109,7 +109,7 @@ function check_new_post() {
     result.forEach(function(elm) {
       idx = elm.idx
       title = elm.title
-      link = elm.link.substr(0, 100)
+      link = elm.link
 
       if(idx != '') {
         if(is_latest) {
@@ -117,8 +117,8 @@ function check_new_post() {
         } is_latest = false
 
         if(idx > before_latest) {
-          console.log(getDate(), idx, elm.title, elm.link)
-          mailer.sendNotification(elm.title, elm.link)
+          console.log(getDate(), idx, title, link)
+          mailer.sendNotification(title, link)
         }
       }
     })
