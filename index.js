@@ -53,8 +53,6 @@ app.listen(3550, function() {
 
 //----------- Upper web, Lower service -----------
 
-var before_latest = 0;
-var latest = 0;
 
 
 function check_new_post() {
@@ -72,49 +70,68 @@ function check_new_post() {
     await page.goto(URL, {waitUntil: 'networkidle0'})
     await page.waitForSelector('tr')
     await page.addScriptTag({url: 'https://code.jquery.com/jquery-3.2.1.min.js'})
+    //await page.addScriptTag({content: 'fs'})
 
     const result = await page.evaluate(() => {
 
       try {
-        isLatest = true;
+        posts = []
         $('tr').each(function(index, element) {
           idx = $(this)
                 .find('td')
                 .first()
                 .text()
                 .trim();// Get a each post-id from the webpage.
-
-          if(idx != '') {
-            if(isLatest) {
-              latest = idx;
-              fs.writeFile('./storage/latest.txt', latest, 'utf8', function(err) {
-                if(err) throw err;
-              })
-            } isLatest = false;
-
-
-            if(idx > before_latest) {
-              subject = $(this).find('td.subject > a');
-              title = subject.text();
-              link = subject.attr('href');
-              console.log(getDate(), idx, title, link);
-              mailer.sendNotification(title, link);
-
-            } //new post will be handled here.
-          }// filter new post
-
+          subject = $(this).find('td.subject > a');
+          title = subject.text();
+          link = subject.attr('href');
+          posts.push({
+            idx: idx,
+            title: title,
+            link: link
+          })
         })
-        console.log(getDate(), 'End Checking')
+
       } catch(err) {
          throw err
       }
-    }
-  )
 
-  await browser.close();
-  console.log(getDate(), 'End Checking.')
+      return posts
+    })
+    //console.log(result) -> well done
+    await browser.close()
+
+    // DONE of loading data.
+
+    before_latest = fs.readFileSync('./storage/latest.txt', 'utf8');
+    //before_latest = 490
+    is_latest = true;
+    result.forEach(function(elm) {
+      idx = elm.idx
+
+      if(idx != '') {
+        if(is_latest) {
+          updateLatestStorage(idx)
+        } is_latest = false
+
+        if(idx > before_latest) {
+          console.log(getDate(), idx, elm.title, elm.link)
+          //mailer.sendNotification(elm.title, elm.link)
+        }
+      }
+    })
+
+    console.log(getDate(), 'End Checking.')
+  }).catch(err => {
+    throw err
   });
 
+}
+
+function updateLatestStorage(latest) {
+  fs.writeFile('./storage/latest.txt', latest, 'utf8', function(err) {
+    if(err) throw err;
+  })
 }
 
 function getDate(){
