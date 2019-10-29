@@ -58,7 +58,7 @@ var latest = 0;
 
 
 function check_new_post() {
-  console.log(getDate(), 'Start Checking : ' + res.statusCode);
+  console.log(getDate(), 'Start Checking.');
   before_latest = fs.readFileSync('./storage/latest.txt', 'utf8');
   latest = 0
   puppeteer.launch({ headless: true, args: [
