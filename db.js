@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+var config = require('./db-config.json')
 
 var conn = mysql.createConnection({
   host: "localhost",
