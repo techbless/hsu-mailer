@@ -15,10 +15,11 @@ app.use(bodyParser.urlencoded({extended : true}));
 
 app.get('/register/email', function(req, res) {
   var sig = req.query.sig;
-  var code = sig.split('*')[0];
-  var email = sig.split('*')[1];
+  var email = sig;
+  //var code = sig.split('*')[0];
+  //var email = sig.split('*')[1];
 
-  var sql = 'UPDATE hsu_list SET email=? WHERE code=?';
+  /*var sql = 'UPDATE hsu_list SET email=? WHERE code=?';
   var params = [email, code];
 
   conn.query(sql, params, function(err, results) {
@@ -32,6 +33,22 @@ app.get('/register/email', function(req, res) {
       }
     }
   });
+  */
+
+  const sql = 'INSERT INTO hsu_list(email) VALUE(?)'
+  var params = [email]
+
+  conn.query(sql, params, function(err, results) {
+    if(err) {
+      throw err;
+    } else {
+      if(results.affectedRows >= 1) {
+        res.send("이메일 등록을 성공하였습니다.");
+      } else {
+        res.send("이메일 등록을 실패했습니다.");
+      }
+    }
+  })
 });
 
 app.get('/send/testmail', function(req, res) {
