@@ -153,11 +153,6 @@ function updateLatestStorage(latest) {
   })
 }
 
-function getDate(){
-    var now = new Date();
-    return now.toLocaleString()+" =>  ";
-}
-
 function updateLatestIdxLog() {
   latest = fs.readFileSync('./storage/latest.txt', 'utf8');
   newlog = getDate() + latest + '\r\n';
