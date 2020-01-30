@@ -6,7 +6,7 @@ const URL = 'http://www.hansung.ac.kr/web/www/1323';
 
 function checkNewPost() {
   console.log(getDate(), 'Start Checking.');
-  puppeteer.launch({ headless: true, args: [
+  puppeteer.launch({args: [
       '--no-sandbox',
       '--disable-setuid-sandbox'
     ]}).then(async browser => {
