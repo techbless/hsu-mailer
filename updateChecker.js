@@ -7,8 +7,7 @@ const URL = 'http://www.hansung.ac.kr/web/www/1323';
 function checkNewPost() {
   console.log(getDate(), 'Start Checking.');
   puppeteer.launch({args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox'
+      '--no-sandbox'
     ]}).then(async browser => {
     const page = await browser.newPage();
     await page.setViewport({width: 320, height: 600})
