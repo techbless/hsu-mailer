@@ -1,7 +1,5 @@
 const nodemailer = require('nodemailer');
 const smtpPool = require('nodemailer-smtp-pool');
-// var config = require('./mail-config.json')
-const conn = require('./db');
 const storage = require('./storage');
 
 const transporter = nodemailer.createTransport(smtpPool({
