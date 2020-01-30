@@ -3,6 +3,7 @@ const express = require('express');
 const storage = require('./storage');
 const updateChecker = require('./updateChecker');
 const bodyParser = require('body-parser');
+const logger = require('morgan');
 
 
 
@@ -10,6 +11,8 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
+app.use(express.static('public'));
+app.use(logger('dev'));
 
 app.post('/register/email/', function(req, res) {
   const email = req.body.email;
@@ -35,7 +38,7 @@ app.post('/register/email/', function(req, res) {
 });*/
 
 app.listen(3550, function() {
-  console.log('listen on port 3000!');
+  console.log('Server Started!');
 });
 
 //----------- Upper web, Lower service -----------
