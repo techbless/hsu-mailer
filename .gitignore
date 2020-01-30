@@ -3,3 +3,6 @@ package-lock.json
 log
 storage
 db-config.json
+
+.idea
+.env
