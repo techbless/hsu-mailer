@@ -1,6 +1,5 @@
 node_modules
 package-lock.json
-log
 storage
 db-config.json
 
