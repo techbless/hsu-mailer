@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "pm2 start index.js  --name 'hsu-mailer' -o ./log/mailer.log -e ./log/mailer-err.log",
-    "start-dev": "node index.js"
+    "start-backup": "pm2 start index.js  --name 'hsu-mailer' -o ./log/mailer.log -e ./log/mailer-err.log",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
