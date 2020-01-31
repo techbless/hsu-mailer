@@ -19,10 +19,10 @@ const transporter = nodemailer.createTransport(smtpPool({
 
 exports.sendTestMail = function(bcc) {
   const from = '새로운 비교과 공지🔔 <mail.lulru@gmail.com>';
-  const text = '이 이메일을 수신하였다면 정상적으로 등록이 완료된 것입니다.'
-  const to = 'mail.lulru@gmail.com'
+  const text = '이 이메일을 수신하였다면 정상적으로 등록이 완료된 것입니다.';
+  const to = 'mail.lulru@gmail.com';
   const html = `<h1>${text}</h1>`;
-  const subject = '테스트메일입니다.'
+  const subject = '테스트메일입니다.';
   const mailOptions = {
     from,
     to,
@@ -59,9 +59,15 @@ exports.sendNotification = function(subject, url) {
 
       transporter.sendMail(mailOptions, (err, res) => {
         if (err) {
-          console.log(getDate(), 'failed... => ', err);
+          console.log(getDate(), 'failed => ', err);
         } else {
-          console.log(getDate(), 'succeed... => ', res);
+          console.log(
+            getDate(),
+            'Mail Sent Successfully!',
+            '\n  accepted : ', res.accepted,
+            '\n  rejected : ', res.rejected,
+            '\n================= END ================='
+          );
         }
       });
     });
