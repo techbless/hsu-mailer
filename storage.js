@@ -34,7 +34,18 @@ async function getMails() {
   return JSON.parse(data);
 }
 
+async function updateLatestIndex(latest) {
+  await writeStorage('./storage/latest.txt', latest);
+}
+
+async function getLatestIndex() {
+  return await readStorage('./storage/latest.txt');
+}
+
+
 module.exports = {
   addNewMAil: addNewMail,
-  getMails: getMails
+  getMails: getMails,
+  updateLatestIndex: updateLatestIndex,
+  getLatestIndex: getLatestIndex
 };
