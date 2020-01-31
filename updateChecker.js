@@ -72,7 +72,7 @@ function checkNewPost() {
         if(idx > before_latest) {
           console.log(getDate(), "New Post Detected!");
           console.log(getDate(), idx, title);
-          mailer.sendNotification(title, link);
+          mailer.sendNotification(idx, title, link);
         }
       }
     });

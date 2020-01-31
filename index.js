@@ -4,6 +4,7 @@ const storage = require('./storage');
 const updateChecker = require('./updateChecker');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
+const mailer = require('./mailer.js');
 
 
 
@@ -18,24 +19,14 @@ app.post('/register/email/', function(req, res) {
   const email = req.body.email;
   storage.addNewMAil(email)
     .then(wasSuccess => {
-      if(wasSuccess)
+      if(wasSuccess) {
         res.send('성공적으로 메일링 리스트에 추가되었습니다.');
-      else
+        mailer.sendWelcomeMail(email);
+      } else {
         res.send('메일 주소가 정확한지 확인한 후 다시 시도해주세요.');
+      }
     })
 });
-
-/*app.get('/send/testmail', function(req, res) {
-  var bcc = req.query.bcc;
-  var pw = req.query.pw;
-
-  if(pw === 'as12') {
-    mailer.sendTestMail(bcc);
-    res.send('Done.')
-  } else {
-    res.send('Your are not admin.')
-  }
-});*/
 
 app.listen(3550, function() {
   console.log('Server Started!');
