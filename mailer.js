@@ -13,7 +13,7 @@ exports.sendWelcomeMail = function(bcc) {
   };
   sgMail.send(msg)
     .then((res) => {
-      console.log('Welcome Email Sent');
+      console.log(getDate(), 'Welcome Email Sent');
     })
     .catch((err) => {
       console.log(err);
@@ -23,6 +23,11 @@ exports.sendWelcomeMail = function(bcc) {
 exports.sendNotification = function(idx, subject, url) {
   storage.getMails()
     .then((bcc) => {
+      if (!bcc) {
+        console.log(getDate(), 'Failed to get subscribers from S3');
+        return;
+      }
+
       const msg = {
         from: '새로운 비교과 공지🔔 <mail.lulru@gmail.com>',
         to: 'mail.lulru@gmail.com',
@@ -43,5 +48,5 @@ exports.sendNotification = function(idx, subject, url) {
 
 function getDate(){
     const now = new Date();
-    return now.toLocaleString()+" =>  ";
+    return now.toLocaleString()+" => ";
 }
