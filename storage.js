@@ -17,10 +17,12 @@ async function addNewMail(email) {
 
   try {
     const mails = await getMails();
-    mails.push(email);
-    const json = JSON.stringify(mails);
+    if(!mails.includes(email)) {
+      mails.push(email);
+      const json = JSON.stringify(mails);
 
-    await writeStorage('./storage/mails.json', json);
+      await writeStorage('./storage/mails.json', json);
+    }
 
     return true;
   } catch (e) {
@@ -41,7 +43,6 @@ async function updateLatestIndex(latest) {
 async function getLatestIndex() {
   return await readStorage('./storage/latest.txt');
 }
-
 
 module.exports = {
   addNewMAil: addNewMail,
