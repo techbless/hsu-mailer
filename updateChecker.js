@@ -1,6 +1,5 @@
 const mailer = require('./mailer.js');
 const puppeteer = require('puppeteer');
-const fs = require('fs');
 const storage = require('./storage');
 
 const URL = 'http://www.hansung.ac.kr/web/www/1323';
@@ -40,23 +39,23 @@ function checkNewPost() {
             idx: idx,
             title: title,
             link: link
-          })
-        })
+          });
+        });
 
       } catch(err) {
-        throw err
+        throw err;
       }
 
-      return posts
+      return posts;
     });
     //console.log(result) -> well done
     await browser.close();
-
     // DONE of loading data.
 
-    //const before_latest = fs.readFileSync('./storage/latest.txt', 'utf8');
     const before_latest = await storage.getLatestIndex();
     let is_latest = true;
+    let existNewPost = false;
+    let latest_idx = before_latest; // Prevent from uploading wrong idx.
     result.forEach(function(elm) {
       const idx = elm.idx;
       const title = elm.title;
@@ -64,12 +63,12 @@ function checkNewPost() {
 
       if(idx !== '') {
         if(is_latest) {
-          storage.updateLatestIndex(idx);
-          //updateLatestStorage(idx)
+          latest_idx = idx;
         }
         is_latest = false;
 
         if(idx > before_latest) {
+          existNewPost = true;
           console.log(getDate(), "New Post Detected!");
           console.log(getDate(), idx, title);
           mailer.sendNotification(idx, title, link);
@@ -77,17 +76,17 @@ function checkNewPost() {
       }
     });
 
+    if(existNewPost) {
+      storage.updateLatestIndex(latest_idx)
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
     console.log(getDate(), 'End Checking.');
   }).catch(err => {
     throw err;
   });
-
-}
-
-function updateLatestIdxLog() {
-  const latest = fs.readFileSync('./storage/latest.txt', 'utf8');
-  const newlog = getDate() + latest + '\r\n';
-  fs.appendFileSync('./log/latest_idx.log', newlog);
 }
 
 function getDate(){
@@ -96,6 +95,5 @@ function getDate(){
 }
 
 module.exports = {
-  updateLatestIdxLog: updateLatestIdxLog,
   checkNewPost: checkNewPost
 };
