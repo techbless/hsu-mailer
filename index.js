@@ -6,8 +6,6 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const mailer = require('./mailer.js');
 
-
-
 const app = express();
 
 app.use(bodyParser.json());
@@ -38,7 +36,5 @@ app.listen(process.env.PORT, function() {
 });
 
 //----------- Upper web, Lower service -----------
-
-
 
 setInterval(updateChecker.checkNewPost, 10 * 60 * 1000);

@@ -1,11 +1,11 @@
 const AWS = require('aws-sdk');
-require('dotenv').config();
 AWS.config.update({
   region: 'us-east-1',
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
 const s3 = new AWS.S3();
+
 
 const BUCKET_NAME = 'hspoint';
 const SUBSCRIBERS_FILENAME = 'subscribers.json';
@@ -20,10 +20,12 @@ async function uploadToS3(fileName, data) {
     Body: String(data)
   };
 
+
   const res = await s3.upload(params).promise();
   console.log(`${fileName} uploaded successfully.`);
   return res;
 }
+
 
 //const _downloadS3 = util.promisify(s3.getObject);
 async function downloadFromS3(filename) {
@@ -41,10 +43,12 @@ async function downloadFromS3(filename) {
 
 }
 
+
 function validateEmail(email) {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
 }
+
 
 async function addNewMail(email) {
   if (!validateEmail(email))
@@ -63,6 +67,7 @@ async function addNewMail(email) {
 
 }
 
+
 async function getMails() {
   const data = await downloadFromS3(SUBSCRIBERS_FILENAME);
 
@@ -73,9 +78,11 @@ async function getMails() {
   }
 }
 
+
 async function updateLatestIndex(latest) {
   await uploadToS3(LATEST_IDX_FILENAME, latest);
 }
+
 
 async function getLatestIndex() {
   const latest = await downloadFromS3(LATEST_IDX_FILENAME);
@@ -86,6 +93,7 @@ async function getLatestIndex() {
     return undefined;
   }
 }
+
 
 module.exports = {
   addNewMAil: addNewMail,
