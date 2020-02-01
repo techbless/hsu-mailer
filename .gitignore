@@ -1,7 +1,4 @@
 node_modules
 package-lock.json
-storage
-db-config.json
-
 .idea
 .env
