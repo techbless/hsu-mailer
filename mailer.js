@@ -2,6 +2,8 @@ const nodemailer = require('nodemailer');
 const smtpPool = require('nodemailer-smtp-pool');
 const storage = require('./storage');
 
+console.log(process.env.MAIL_USER, process.env.MYSQL_PASSWORD); //test deployment setting
+
 const transporter = nodemailer.createTransport(smtpPool({
   service: 'Gmail',
   host: 'localhost',
