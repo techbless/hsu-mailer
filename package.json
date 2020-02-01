@@ -12,15 +12,12 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "cheerio": "^1.0.0-rc.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "morgan": "^1.9.1",
-    "mysql": "^2.17.1",
     "nodemailer": "^6.3.0",
     "nodemailer-smtp-pool": "^2.8.3",
     "puppeteer": "^2.0.0",
-    "puppeteer-core": "^2.0.0",
-    "request": "^2.88.0"
+    "puppeteer-core": "^2.0.0"
   }
 }
