@@ -20,23 +20,25 @@ app.post('/register/email/', function(req, res) {
   storage.addNewMAil(email)
     .then(wasSuccess => {
       if(wasSuccess) {
-        res.send('성공적으로 메일링 리스트에 추가되었습니다.');
+        res.send('성공적으로 비교과 공지 구독을 완료했습니다.');
         mailer.sendWelcomeMail(email);
       } else {
-        res.send('메일 주소가 정확한지 확인한 후 다시 시도해주세요.');
+        res.send('이미 등록된 메일로는 구독할 수 없습니다.');
       }
     })
+    .catch(err => {
+      console.log(err);
+      res.send('비교과 공지 구독에 실패하였습니다.')
+    }) 
 });
 
 app.listen(process.env.PORT, function() {
   console.log('Server Started!');
+  updateChecker.checkNewPost();
 });
 
 //----------- Upper web, Lower service -----------
 
 
-updateChecker.updateLatestIdxLog();
-updateChecker.checkNewPost();
 
-setInterval(updateChecker.updateLatestIdxLog, 5 * 60 * 1000);
 setInterval(updateChecker.checkNewPost, 10 * 60 * 1000);
