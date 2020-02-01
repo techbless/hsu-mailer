@@ -84,12 +84,6 @@ function checkNewPost() {
 
 }
 
-/*function updateLatestStorage(latest) {
-  fs.writeFile('./storage/latest.txt', latest, 'utf8', function(err) {
-    if(err) throw err;
-  })
-}*/
-
 function updateLatestIdxLog() {
   const latest = fs.readFileSync('./storage/latest.txt', 'utf8');
   const newlog = getDate() + latest + '\r\n';
