@@ -28,7 +28,7 @@ app.post('/register/email/', function(req, res) {
     })
 });
 
-app.listen(3550, function() {
+app.listen(process.env.PORT, function() {
   console.log('Server Started!');
 });
 
