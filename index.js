@@ -20,7 +20,7 @@ app.post('/register/email/', function(req, res) {
   subscribe.requestSubscription(email)
     .then((success) => {
       if(success) {
-        res.send('인증메일이 발송되었습니다. 메일 인증을 완료하여야 구독이 완료됩니다.');
+        res.send('인증메일이 발송되었습니다. 메일 인증을 마치면 구독이 완료됩니다.');
       } else {
         res.send('이미 구독된 메일은 중복 등록할 수 없습니다.');
       }
@@ -47,7 +47,7 @@ app.get('/verify/email/:email/:token', function (req, res) {
           if(success) {
             res.send('비교과 공지 알림 구독을 성공적으로 마쳤습니다. 이제 새로운 공지를 편하게 확인하세요.')
           } else {
-            res.send('유효하지 않은 메일 형식입니다.');
+            res.send('잘못된 메일이거나 이미 등록된 메일입니다.');
           }
         })
         .catch(err => {

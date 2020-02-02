@@ -54,7 +54,12 @@ async function addNewMail(email) {
   if (!validateEmail(email))
     return false;
 
+
+
   const mails = await getMails();
+  if(mails.includes(email))
+    return false;
+
   mails.push(email);
 
   const mailsJson = JSON.stringify(mails);
