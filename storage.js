@@ -55,9 +55,6 @@ async function addNewMail(email) {
     return false;
 
   const mails = await getMails();
-  if(mails.includes(email))
-    return false;
-
   mails.push(email);
 
   const mailsJson = JSON.stringify(mails);
@@ -94,10 +91,32 @@ async function getLatestIndex() {
   }
 }
 
+async function uploadToken(email, token) {
+  await uploadToS3(`token/${email}`, token);
+}
+
+async function getToken(email) {
+  try {
+    const token = await downloadFromS3(`token/${email}`);
+
+    if(token) {
+      return token;
+    } else {
+      return undefined;
+    }
+
+  } catch (err) {
+    return undefined;
+  }
+
+}
+
 
 module.exports = {
   addNewMAil: addNewMail,
   getMails: getMails,
   updateLatestIndex: updateLatestIndex,
-  getLatestIndex: getLatestIndex
+  getLatestIndex: getLatestIndex,
+  uploadToken: uploadToken,
+  getToken: getToken
 };
