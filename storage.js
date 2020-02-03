@@ -40,7 +40,6 @@ async function downloadFromS3(filename) {
   } catch (err) {
     return undefined;
   }
-
 }
 
 
