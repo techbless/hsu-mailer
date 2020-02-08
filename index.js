@@ -46,7 +46,7 @@ app.get('/verify/email/:email/:token', function (req, res) {
         .then(success => {
           if(success) {
             res.send('비교과 공지 알림 구독을 성공적으로 마쳤습니다. 이제 새로운 공지를 편하게 확인하세요.');
-            mailer.sendWelcomeMail(email);
+            mailer.sendWelcomeMail([email]);
           } else {
             res.send('잘못된 메일이거나 이미 등록된 메일입니다.');
           }

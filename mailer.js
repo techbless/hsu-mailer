@@ -1,25 +1,54 @@
-const crypto = require('crypto');
 const storage = require('./storage');
-const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const AWS = require('aws-sdk');
+
+
+AWS.config.update({
+  region: 'us-east-1',
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+});
+
+const ses = new AWS.SES();
+
+function generateParams(bcc, subject, html, text) {
+  return {
+    Destination: {
+      ToAddresses: ["hspoint@techbless.live"],  // 받는 사람 이메일 주소
+      CcAddresses: [],    // 참조
+      BccAddresses: bcc    // 숨은 참조
+    },
+    Message: {
+      Body: {
+        Html: {
+          Data: html,
+          Charset: "utf-8"
+        },
+        Text: {
+          Data: text,      // 본문 내용
+          Charset: "utf-8"            // 인코딩 타입
+        }
+      },
+      Subject: {
+        Data: subject,   // 제목 내용
+        Charset: "utf-8"              // 인코딩 타입
+      }
+    },
+    Source: "=?utf-8?B?67mE6rWQ6rO8IOqzteyngCDwn5SU?= <hspoint@techbless.live>",          // 보낸 사람 주소
+    ReplyToAddresses: ["hspoint@techbless.live"] // 답장 받을 이메일 주소
+  }
+}
 
 exports.sendWelcomeMail = function(bcc) {
-  const msg = {
-    to: 'mail.lulru@gmail.com',
-    bcc: bcc,
-    from: '공지알림 등록완료🔔 <mail.lulru@gmail.com>',
-    subject: '이 이메일을 수신하였다면 정상적으로 등록이 완료된 것입니다.',
-    text: '앞으로 번거로운 비교과 공지 확인, 공지 알림 서비스로 빠르게 확인해보세요.',
-    html: `<h2>앞으로 번거로운 비교과 공지 확인, 공지 알림 서비스로 빠르게 확인해보세요.</h2>`,
-  };
-  sgMail.send(msg)
-    .then((res) => {
-      console.log(getDate(), 'Welcome Email Sent');
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  const subject = '이 이메일을 수신하였다면 정상적으로 등록이 완료된 것입니다.';
+  const text = '번거로운 비교과 공지 확인, 이제 메일로 빠르게 받아보세요!';
+  const html = `<h2>${text}</h2>`;
+  const params = generateParams(bcc, subject, html, text);
+  ses.sendEmail(params, (err, data) => {
+    if (err) console.log(err);
+    else console.log(getDate(), 'Welcome Email Sent -> ', bcc);
+  })
 };
+
 
 exports.sendNotification = function(idx, subject, url) {
   storage.getMails()
@@ -29,44 +58,27 @@ exports.sendNotification = function(idx, subject, url) {
         return;
       }
 
-      const msg = {
-        from: '새로운 비교과 공지🔔 <mail.lulru@gmail.com>',
-        to: 'mail.lulru@gmail.com',
-        bcc: bcc,
-        subject: subject,
-        text: url,
-        html: `<a style='font-size: 17px' href='${url}'>공지 바로가기</a>`,
-      };
-      sgMail.send(msg)
-        .then((res) => {
-          console.log(`${idx} Notification Email Sent!`);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      const html = `<a style='font-size: 17px' href='${url}'>공지 바로가기</a>`;
+      const params = generateParams(bcc, subject, html, url);
+
+      ses.sendEmail(params, (err, data) => {
+        if(err) console.log(err);
+        else console.log(getDate(), `${idx} Notification Email Sent!`);
+      });
     });
 };
 
 exports.sendVerificationMail = async function(email, url) {
-  const subject = '안녕하세요. 비교과 공지 알림 구독을 위해 이메일 인증을 완료해주세요.';
+  const subject = '비교과 공지 알림 구독을 위해 이메일 인증을 완료해주세요.';
   const html = await renderVerificationHtml(url);
 
-  const msg = {
-    from: '새로운 비교과 공지🔔 <mail.lulru@gmail.com>',
-    to: 'mail.lulru@gmail.com',
-    bcc: email,
-    subject: subject,
-    text: url,
-    html: html,
-  };
+  const params = generateParams([email], subject, html, url);
 
-  sgMail.send(msg)
-    .then((res) => {
-      console.log(getDate(), 'Verification Email Sent');
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  ses.sendEmail(params, (err, data) => {
+    if(err) console.log(err);
+    else console.log(getDate(), 'Verification Email Sent!');
+  });
+
 };
 
 
