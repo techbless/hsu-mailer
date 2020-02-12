@@ -20,7 +20,6 @@ async function uploadToS3(fileName, data) {
     Body: String(data)
   };
 
-
   const res = await s3.upload(params).promise();
   console.log(`${fileName} uploaded successfully.`);
   return res;
@@ -42,18 +41,16 @@ async function downloadFromS3(filename) {
   }
 }
 
-
+// 이메일 형식 검증
 function validateEmail(email) {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
 }
 
-
+// 이메일을 subscribers.json에 추가
 async function addNewMail(email) {
   if (!validateEmail(email))
     return false;
-
-
 
   const mails = await getMails();
   if(mails.includes(email))
@@ -68,7 +65,6 @@ async function addNewMail(email) {
 
 }
 
-
 async function getMails() {
   const data = await downloadFromS3(SUBSCRIBERS_FILENAME);
 
@@ -76,6 +72,20 @@ async function getMails() {
     return JSON.parse(data);
   } else {
     return undefined;
+  }
+}
+
+// S3 내부에 파일 존재 여부 판별
+async function doesExist(filename) {
+  const params = {
+    Bucket: BUCKET_NAME,
+    Key: filename
+  };
+  try {
+    await s3.headObject(params).promise();
+    return true;
+  } catch {
+    return false;
   }
 }
 
@@ -122,5 +132,6 @@ module.exports = {
   updateLatestIndex: updateLatestIndex,
   getLatestIndex: getLatestIndex,
   uploadToken: uploadToken,
-  getToken: getToken
+  getToken: getToken,
+  doesExist: doesExist,
 };

@@ -12,6 +12,10 @@ async function requestSubscription(email) {
   if (!validateEmail(email))
     return false;
 
+  if(await storage.doesExist(`token/${email}`)) {
+    return true;
+  }
+
   const mails = await storage.getMails();
   if(mails.includes(email))
     return false;
