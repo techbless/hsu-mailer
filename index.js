@@ -29,7 +29,7 @@ app.post('/register/email/', function(req, res) {
       } else {
         res.render('result', {
           title: '이미 등록된 메일주소 입니다.',
-          content: '이미 구독된 메일은 등록할 수 없습니다.'
+          content: '이미 구독중인 메일입니다. 다시 확인해주세요.'
         });
       }
 
