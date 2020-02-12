@@ -14,20 +14,31 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static('public'));
 app.use(logger('dev'));
 
+app.set('view engine', 'ejs');
+
 app.post('/register/email/', function(req, res) {
   const email = req.body.email;
 
   subscribe.requestSubscription(email)
     .then((success) => {
       if(success) {
-        res.send('인증메일이 발송되었습니다. 메일 인증을 마치면 구독이 완료됩니다.');
+        res.render('result', {
+          title: '메일 인증',
+          content: '인증메일이 발송되었습니다. 메일 인증을 마치면 구독이 완료됩니다.'
+        })
       } else {
-        res.send('이미 구독된 메일은 중복 등록할 수 없습니다.');
+        res.render('result', {
+          title: '이미 등록된 메일주소 입니다.',
+          content: '이미 구독된 메일은 등록할 수 없습니다.'
+        });
       }
 
     })
     .catch((err) => {
-      res.send('인증메일 전송에 실패했습니다.');
+      res.render('result', {
+        title: '메일 전송 실패',
+        content: '인증메일 전송에 실패했습니다.'
+      });
       console.log(err);
     });
 });
@@ -39,25 +50,41 @@ app.get('/verify/email/:email/:token', function (req, res) {
   subscribe.verifyEmail(email, token)
     .then(verified => {
       if(!verified) {
-        res.send('유효하지 않은 메일 인증입니다.');
+        res.render('result', {
+          title: '유효하지 않은 메일인증',
+          content: '유효하지 않은 메일 인증입니다.'
+        });
+        return;
       }
 
       subscribe.subscribe(email)
         .then(success => {
           if(success) {
-            res.send('비교과 공지 알림 구독을 성공적으로 마쳤습니다. 이제 새로운 공지를 편하게 확인하세요.');
+            res.render('result', {
+              title: '구독 성공',
+              content: '비교과 공지 알림 구독을 성공적으로 마쳤습니다. 이제 새로운 공지를 편하게 확인하세요.'
+            });
             mailer.sendWelcomeMail([email]);
           } else {
-            res.send('잘못된 메일이거나 이미 등록된 메일입니다.');
+            res.render('result', {
+              title: '잘못된 메일 주소',
+              content: '이미 등록된 이메일이거나 잘못된 이메일 주소입니다.'
+            });
           }
         })
         .catch(err => {
-          res.send('구독 리스트에 추가하는 과정에서 오류가 발생하였습니다.');
+          res.render('result', {
+            title: '구독 실패',
+            content: '구독자 리스트에 추가하는 동안 오류가 발생했습니다.'
+          });
           console.log(err);
         });
     })
     .catch((err) => {
-      res.send('메일 인증 과정에서 오류가 발생하였습니다.');
+      res.render('result', {
+        title: '메일 인증 실패',
+        content: '메일 인증 과정에서 오류가 발생했습니다.'
+      });
       console.log(err);
     })
 });
