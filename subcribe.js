@@ -12,13 +12,13 @@ async function requestSubscription(email) {
   if (!validateEmail(email))
     return false;
 
-  if(await storage.doesExist(`token/${email}`)) {
-    return true;
-  }
-
   const mails = await storage.getMails();
   if(mails.includes(email))
     return false;
+
+  if(await storage.doesExist(`token/${email}`)) {
+    return true;
+  }
 
   const token = await generateToken();
   await storage.uploadToken(email, token);
