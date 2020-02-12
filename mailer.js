@@ -91,6 +91,7 @@ async function renderVerificationHtml(url) {
           height: 300px;
           box-shadow: 0px 0px 5px black;
           padding: 50px;
+          color: black;
         ">
           <h2>메일인증 안내입니다.</h2>
           <hr style="
@@ -102,8 +103,8 @@ async function renderVerificationHtml(url) {
           <p>아래 '메일 인증'버튼을 클릭하여 알림 구독을 완료해 주세요.</p>
           <p>감사합니다.</p>
           <a style="
-            margin-top: 70px;
-            background-color: #baf;
+            margin-top: 35px;
+            background-color: #75cbe7;
             border: none;
             color: white;
             padding: 11px 22px;
