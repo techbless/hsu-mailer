@@ -5,7 +5,9 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     <style>
         html, body {
             height: 100%;
@@ -17,31 +19,44 @@
             background-size: cover;
             text-align: center;
         }
-        .pattern-bg {
+        .blur {
+            background: rgba(117, 203, 231, 0.7);
             width: 100%;
             height: 100%;
-            background: rgba(117, 203, 231, 0.7) url('/images/angle-bg.png') no-repeat scroll center bottom / 100% auto;
         }
-        .board {
-            max-width: 100%;
+        form {
+            width: 500px;
+            max-width: 90%;
             position: relative;
-            top: 30%;
+            top: 28%;
             display: inline-block;
             background-color: rgba(255, 255, 255, 0.87);
             padding: 30px 20px 30px 20px;
             box-shadow: rgba(255, 255, 255, 0.51) 0px 0px 70px;
             border-radius: 10px;
         }
+        input[type=submit] {
+            background-color: #c3403c;
+        }
+        input[type=submit]:hover {
+            color: #c3403c;
+        }
     </style>
     <title>구독 취소</title>
 </head>
 <body>
-<div class="pattern-bg board">
-    <form action="/unsubscribe" method="post">
-        <input type="email" name="email" placeholder="이메일주소" id="email" required="required" style="height: 42px; width: 50%; border-radius: 30px; text-align: center;">
-        <input type="submit" class="button" value="구독취소">
-    </form>
-    
-</div>
+    <div class="blur">
+        <form action="/unsubscribe" method="post">
+            <h2 style="margin-bottom: 35px;">구독 취소</h2>
+            <input type="email" name="email" placeholder="이메일주소" id="email" class="form-control" required="required" style="display: inline-block; height: 42px; width: 65%; border-radius: 30px; text-align: center;">
+            <input type="submit" class="button" value="구독취소">
+            <hr style="border: .7px solid #989898">
+            새로운 비교과 공지에 대한 알림을 그만 받길 윈하신다면, 이메일 주소를 입력한 후 '구독취소'버튼을 눌러주세요.
+        </form>
+    </div>
+
+
+    <script src="/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="/js/vendor/bootstrap.min.js"></script>
 </body>
 </html>
