@@ -89,6 +89,14 @@ app.get('/verify/email/:email/:token', function (req, res) {
     })
 });
 
+app.get('/unsubscribe', function(req, res) {
+  res.render('unsubscribe');
+});
+
+app.post("/unsubscribe", function(req, res) {
+  res.send("done");
+});
+
 app.listen(process.env.PORT, function() {
   console.log('Server Started!');
   updateChecker.checkNewPost();
