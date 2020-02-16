@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #75cbe7 url('/images/parallax-3.jpg') no-repeat scroll center;
+            background-size: cover;
+            text-align: center;
+        }
+        .pattern-bg {
+            width: 100%;
+            height: 100%;
+            background: rgba(117, 203, 231, 0.7) url('/images/angle-bg.png') no-repeat scroll center bottom / 100% auto;
+        }
+        .board {
+            max-width: 100%;
+            position: relative;
+            top: 30%;
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.87);
+            padding: 30px 20px 30px 20px;
+            box-shadow: rgba(255, 255, 255, 0.51) 0px 0px 70px;
+            border-radius: 10px;
+        }
+    </style>
+    <title>구독 취소</title>
+</head>
+<body>
+<div class="pattern-bg board">
+    <form action="/unsubscribe" method="post">
+        <input type="email" name="email" placeholder="이메일주소" id="email" required="required" style="height: 42px; width: 50%; border-radius: 30px; text-align: center;">
+        <input type="submit" class="button" value="구독취소">
+    </form>
+    
+</div>
+</body>
+</html>
