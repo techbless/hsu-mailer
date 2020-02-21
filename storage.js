@@ -65,6 +65,33 @@ async function addNewMail(email) {
 
 }
 
+// return false when email is not valid, given mail is not subscribed. find error.
+async function deleteEmail(email) {
+  // validate email address
+  if(!validateEmail(email))
+    return false;
+
+  // get subscription list and check given email is included in the list.
+  const mails = await getMails();
+  if(mails.include(email))
+    return false;
+
+  // get index of given email.
+  const targetIdx = mails.indexOf(email);
+  if(targetIdx === -1)
+    return false;
+
+  // delete given email from subscription list.
+  mails.splice(targetIdx, 1);
+
+  // upload updated subscription list to S3 Bucket.
+  const mailsJson = JSON.stringify(mails);
+  await uploadToS3(SUBSCRIBERS_FILENAME, mailsJson);
+
+  // Success!
+  return true;
+}
+
 async function getMails() {
   const data = await downloadFromS3(SUBSCRIBERS_FILENAME);
 
@@ -134,4 +161,5 @@ module.exports = {
   uploadToken: uploadToken,
   getToken: getToken,
   doesExist: doesExist,
+  deleteEmail: deleteEmail
 };
