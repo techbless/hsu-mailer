@@ -1,4 +1,6 @@
 const AWS = require('aws-sdk');
+const db = require('./modules/mysql');
+
 AWS.config.update({
   region: 'us-east-1',
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -6,11 +8,8 @@ AWS.config.update({
 });
 const s3 = new AWS.S3();
 
-
 const BUCKET_NAME = 'hspoint';
-const SUBSCRIBERS_FILENAME = 'subscribers.json';
 const LATEST_IDX_FILENAME = 'latest.txt';
-
 
 //const _uploadS3 = util.promisify(s3.upload);
 async function uploadToS3(fileName, data) {
@@ -47,22 +46,31 @@ function validateEmail(email) {
   return re.test(String(email).toLowerCase());
 }
 
-// 이메일을 subscribers.json에 추가
-async function addNewMail(email) {
-  if (!validateEmail(email))
+async function addNewMail(email, token) {
+  if(!validateEmail(email))
     return false;
 
-  const mails = await getMails();
-  if(mails.includes(email))
+  try {
+    const sql = 'INSERT INTO mails(email, token) VALUES (?, ?)';
+    const params = [email, token];
+    await db._query(sql, params);
+  } catch(err) {
     return false;
-
-  mails.push(email);
-
-  const mailsJson = JSON.stringify(mails);
-  await uploadToS3(SUBSCRIBERS_FILENAME, mailsJson);
+  }
 
   return true;
+}
 
+async function verifyMail(email) {
+  try {
+    const sql = 'UPDATE mails SET verified=1 WHERE email=?';
+    const params = [email];
+    await db._query(sql, params);
+    return true;
+  } catch(err) {
+    console.log(err);
+    return false;
+  }
 }
 
 // return false when email is not valid, given mail is not subscribed. find error.
@@ -71,51 +79,41 @@ async function deleteEmail(email) {
   if(!validateEmail(email))
     return false;
 
-  // get subscription list and check given email is included in the list.
-  const mails = await getMails();
-  if(mails.include(email))
+  try {
+    const sql = 'DELETE FROM mails WHERE email=?';
+    const params = [email];
+    await db._query(sql, params);
+    return true;
+  } catch(err) {
     return false;
-
-  // get index of given email.
-  const targetIdx = mails.indexOf(email);
-  if(targetIdx === -1)
-    return false;
-
-  // delete given email from subscription list.
-  mails.splice(targetIdx, 1);
-
-  // upload updated subscription list to S3 Bucket.
-  const mailsJson = JSON.stringify(mails);
-  await uploadToS3(SUBSCRIBERS_FILENAME, mailsJson);
-
-  // Success!
-  return true;
+  }
 }
 
+// Return an array of email address in subscription list.
 async function getMails() {
-  const data = await downloadFromS3(SUBSCRIBERS_FILENAME);
-
-  if (data) {
-    return JSON.parse(data);
-  } else {
+  try {
+    const sql = 'SELECT email FROM mails WHERE verified=1';
+    const result = await db._query(sql);
+    return result.map(x => x.email);
+  } catch(err) {
+    console.log(err);
     return undefined;
   }
 }
 
 // S3 내부에 파일 존재 여부 판별
-async function doesExist(filename) {
-  const params = {
-    Bucket: BUCKET_NAME,
-    Key: filename
-  };
+async function doesTokenExist(email) {
   try {
-    await s3.headObject(params).promise();
-    return true;
+    const sql = 'SELECT * FROM mails WHERE email=? AND token IS NOT NULL';
+    const params = [email];
+    const result = await db._query(sql, params);
+
+    return result.length >= 1;
   } catch {
     return false;
   }
 }
-
+doesTokenExist('test@mail.com').then(res => console.log(res));
 
 async function updateLatestIndex(latest) {
   await uploadToS3(LATEST_IDX_FILENAME, latest);
@@ -132,21 +130,24 @@ async function getLatestIndex() {
   }
 }
 
-async function uploadToken(email, token) {
-  await uploadToS3(`token/${email}`, token);
+async function updateToken(email, token) {
+  //await uploadToS3(`token/${email}`, token);
+  const sql = 'UPDATE mails SET token=? WHERE email=?';
+  const params = [token, email];
+  await db._query(sql, params);
 }
 
 async function getToken(email) {
   try {
-    const token = await downloadFromS3(`token/${email}`);
+    const sql = 'SELECT token from mails WHERE email=?';
+    const params = [email];
+    const result = await db._query(sql, params);
 
-    if(token) {
-      return token;
-    } else {
+    if(result[0].token)
+      return result[0].token;
+    else
       return undefined;
-    }
-
-  } catch (err) {
+  } catch(err) {
     return undefined;
   }
 
@@ -158,8 +159,9 @@ module.exports = {
   getMails: getMails,
   updateLatestIndex: updateLatestIndex,
   getLatestIndex: getLatestIndex,
-  uploadToken: uploadToken,
+  updateToken: updateToken,
   getToken: getToken,
-  doesExist: doesExist,
-  deleteEmail: deleteEmail
+  doesTokenExist: doesTokenExist,
+  deleteEmail: deleteEmail,
+  verifyMail: verifyMail
 };
