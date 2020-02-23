@@ -42,12 +42,19 @@
             width: 100%;
             text-align: center;
         }
+        p.intro {
+            width: 80%;
+        }
         form {
             width: 470px;
         }
         @media (max-width: 768px) {
             form {
                 width: 100%;
+            }
+            p.intro {
+                width: 95%;
+                margin: auto;
             }
         }
     </style>
@@ -74,7 +81,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a href="#" class="navbar-brand logo">
-                <h2>LULRUDEV</h2>
+                <h2>비교과 공지 구독</h2>
             </a>
         </div>
         <!--Logo/-->
@@ -99,14 +106,14 @@
         <div class="row v-center">
             <div class="col-xs-12 col-md-7 header-text">
                 <h2>비교과 알림 메일 서비스</h2>
-                <p>번거로운 비교과 공지 확인, 공지 알림 서비스로 빠르게 확인해보세요.</p>
-                <p>새로운 비교과 공지가 올라오면 최대 10분 내에 알림을 받아보실 수 있습니다.</p>
-                <p>메일을 통해 알림이 발송 되며 별도의 앱을 설치하실 필요가 없습니다.</p>
+                <p class="intro">번거로운 비교과 공지 확인, 공지 알림 서비스로 빠르게 확인해보세요.
+                새로운 비교과 공지가 올라오면 최대 10분 내에 알림을 받아보실 수 있습니다.
+                메일을 통해 알림이 발송 되며 별도의 앱을 설치하실 필요가 없습니다.</p>
                 <form action="/register/email" method="post">
                     <input type="email" id="email" name="email" placeholder="이메일주소" class="form-control" required="required">
                     <div class="subscribe">
-                        <input type="submit" class="button" style="margin-top: 0;" value="이메일 등록"><br><br>
-                        <a href="/unsubscribe" style="font-weight: bold; color: #2e2e2e; background-color: rgba(205,92,92,0.29); text-decoration: underline">구독 취소</a>
+                        <input type="submit" class="button" style="margin-top: 0;" value="이메일 구독"><br><br>
+                        <a href="/unsubscribe" style="font-weight: bold; color: #2e2e2e; text-decoration: underline">구독 취소</a>
                     </div>
 
                 </form>
@@ -231,7 +238,7 @@
                             <div class="v-center">
                                 <div class="col-xs-12 col-md-6">
                                     <div class="caption-title" data-animation="animated fadeInUp">
-                                        <h2>추가 앱 설치 없음</h2>
+                                        <h2>앱 설치 없음</h2>
                                     </div>
                                     <div class="caption-desc" data-animation="animated fadeInUp">
                                         <p>대부분의 스마트폰에 메일앱이 기본으로 설치되어있습니다. 알림받을 기기에 메일앱이 설치되어있는지 확인하세요. 없는경우 빠른 푸시 알림을 위해 G-Mail사용을 권장합니다.</p>
