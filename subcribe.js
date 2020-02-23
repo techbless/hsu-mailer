@@ -3,7 +3,7 @@ const storage = require('./storage');
 const mailer = require('./mailer.js');
 
 // 주어진 메일에 대한 토큰, url 생성후 S3 업로드
-async function generateToken(email) {
+async function generateToken() {
   return crypto.randomBytes(64).toString('hex');
 }
 
@@ -16,15 +16,38 @@ async function requestSubscription(email) {
   if(mails.includes(email))
     return false;
 
-  if(await storage.doesExist(`token/${email}`)) {
+  if(await storage.doesTokenExist(email)) {
     return true;
   }
 
   const token = await generateToken();
-  await storage.uploadToken(email, token);
+  await storage.addNewMAil(email, token);
+  //await storage.updateToken(email, token);
 
-  // verification url format -> https://hspoint.herokuapp.com/verify/email/example@email.com/TOKEN
-  const url = `https://${process.env.SITE_URL}/verify/email/${email}/${token}`;
+  // verification url format -> https://hspoint.herokuapp.com/verify/subscribe/example@email.com/TOKEN
+  const url = `https://${process.env.SITE_URL}/verify/subscribe/${email}/${token}`;
+  await mailer.sendVerificationMail(email, url);
+
+  return true;
+}
+
+async function requestUnsubscription(email) {
+  if(!validateEmail(email))
+    return false;
+
+  const mails = await storage.getMails();
+  if(!mails.includes(email))
+    return false;
+
+  if(await storage.doesTokenExist(email)) {
+    return true;
+  }
+
+  const token = await generateToken();
+  await storage.updateToken(email, token);
+
+  // verification url format -> https://hspoint.herokuapp.com/verify/unsubscribe/example@email.com/TOKEN
+  const url = `https://${process.env.SITE_URL}/verify/unsubscribe/${email}/${token}`;
   await mailer.sendVerificationMail(email, url);
 
   return true;
@@ -36,9 +59,9 @@ async function verifyEmail(email, token) {
   return realToken === token;
 }
 
-// subscribers.json 등록
+// Change verified column to 1
 async function subscribe(email) {
-  return await storage.addNewMAil(email);
+  return await storage.verifyMail(email);
 }
 
 async function unsubscribe(email) {
@@ -52,6 +75,8 @@ function validateEmail(email) {
 
 module.exports = {
   requestSubscription: requestSubscription,
+  requestUnsubscription: requestUnsubscription,
   verifyEmail: verifyEmail,
-  subscribe: subscribe
+  subscribe: subscribe,
+  unsubscribe: unsubscribe
 };
