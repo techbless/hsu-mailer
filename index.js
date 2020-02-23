@@ -1,4 +1,5 @@
 require('dotenv').config();
+var compression = require('compression')
 const express = require('express');
 const storage = require('./storage');
 const updateChecker = require('./updateChecker');
@@ -9,6 +10,7 @@ const subscribe = require('./subcribe');
 
 const app = express();
 
+app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static('public'));

@@ -1,6 +1,5 @@
 const mysql = require('mysql');
 const { promisify } = require('util');
-require('dotenv').config();
 
 const pool = mysql.createPool({
   host: process.env.MYSQL_HOST,
