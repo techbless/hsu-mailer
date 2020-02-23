@@ -69,7 +69,7 @@ exports.sendNotification = function(idx, subject, url) {
 };
 
 exports.sendVerificationMail = async function(email, url) {
-  const subject = '비교과 공지 알림 구독을 위해 이메일 인증을 완료해주세요.';
+  const subject = '이메일 인증을 완료해주세요.';
   const html = await renderVerificationHtml(url);
 
   const params = generateParams([email], subject, html, url);
@@ -100,7 +100,7 @@ async function renderVerificationHtml(url) {
           " />
           <p>안녕하세요.</p>
           <p>원할한 서비스 이용을 위해 메일인증을 실시하고있습니다.</p>
-          <p>아래 '메일 인증'버튼을 클릭하여 알림 구독을 완료해 주세요.</p>
+          <p>아래 '메일 인증'버튼을 클릭하여 작업을 완료해 주세요.</p>
           <p>감사합니다.</p>
           <a style="
             margin-top: 35px;
