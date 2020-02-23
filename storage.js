@@ -113,7 +113,6 @@ async function doesTokenExist(email) {
     return false;
   }
 }
-doesTokenExist('test@mail.com').then(res => console.log(res));
 
 async function updateLatestIndex(latest) {
   await uploadToS3(LATEST_IDX_FILENAME, latest);
