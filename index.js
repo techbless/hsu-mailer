@@ -171,9 +171,16 @@ app.get('/verify/unsubscribe/:email/:token', function(req, res) {
 
 app.listen(process.env.PORT, function() {
   console.log('Server Started!');
-  updateChecker.checkNewPost();
+  updateChecker.checkNewPost()
+    .catch(err => {
+      console.log("Error occurred at first check.");
+      console.log(err);
+    })
 });
 
 //----------- Upper web, Lower service -----------
 
-setInterval(updateChecker.checkNewPost, 10 * 60 * 1000);
+//setInterval(updateChecker.checkNewPost, 10 * 60 * 1000);
+setInterval(async() => {
+  await updateChecker.checkNewPost();
+}, 10 * 60 * 1000);

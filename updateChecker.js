@@ -4,7 +4,7 @@ const storage = require('./storage');
 
 const URL = 'http://www.hansung.ac.kr/web/www/1323';
 
-function checkNewPost() {
+async function checkNewPost() {
   console.log(getDate(), 'Start Checking.');
   puppeteer.launch({args: [
     '--no-sandbox',
