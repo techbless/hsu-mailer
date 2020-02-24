@@ -26,7 +26,7 @@ async function requestSubscription(email) {
 
   // verification url format -> https://hspoint.herokuapp.com/verify/subscribe/example@email.com/TOKEN
   const url = `https://${process.env.SITE_URL}/verify/subscribe/${email}/${token}`;
-  await mailer.sendVerificationMail(email, url);
+  await mailer.sendVerificationMail(email, url, '구독');
 
   return true;
 }
@@ -48,7 +48,7 @@ async function requestUnsubscription(email) {
 
   // verification url format -> https://hspoint.herokuapp.com/verify/unsubscribe/example@email.com/TOKEN
   const url = `https://${process.env.SITE_URL}/verify/unsubscribe/${email}/${token}`;
-  await mailer.sendVerificationMail(email, url);
+  await mailer.sendVerificationMail(email, url, '구독취소');
 
   return true;
 }

@@ -68,8 +68,8 @@ exports.sendNotification = function(idx, subject, url) {
     });
 };
 
-exports.sendVerificationMail = async function(email, url) {
-  const subject = '이메일 인증을 완료해주세요.';
+exports.sendVerificationMail = async function(email, url, forWhat) {
+  const subject = `[${forWhat}] 이메일 인증을 완료해주세요.`;
   const html = await renderVerificationHtml(url);
 
   const params = generateParams([email], subject, html, url);
