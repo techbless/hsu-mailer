@@ -68,6 +68,7 @@ function sendDistributedNotification(emails, idx, subject, url) {
 
   const html = `<a style='font-size: 17px' href='${url}'>공지 바로가기</a>`;
   for(let i = 0; i < bccs; i++) {
+    console.log(`length of bccs[${i}] : ${bccs.length}`);
     const params = generateParams(bccs[i], subject, html, url);
 
     ses.sendEmail(params, (err, data) => {
