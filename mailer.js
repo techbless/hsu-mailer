@@ -84,7 +84,7 @@ exports.sendNotification = function(idx, subject, url) {
         console.log(getDate(), 'Failed to get subscribers from S3');
         return;
       }
-
+      console.log(getDate(), 'Start Sending Notification Email of ', idx);
       sendDistributedNotification(bcc, idx, subject, url);
     });
 };
