@@ -49,6 +49,33 @@ exports.sendWelcomeMail = function(bcc) {
   })
 };
 
+function divideArray(arr, n) {
+  const length = arr.length;
+  const cnt = Math.floor(length / n);
+  let tmp = [];
+
+  for (let i = 0; i <= cnt; i++) {
+    const spliced = arr.splice(0, n);
+    if(spliced.length !== 0)
+      tmp.push(spliced);
+  }
+
+  return tmp;
+}
+
+function sendDistributedNotification(emails, idx, subject, url) {
+  const bccs = divideArray(emails, 30);
+
+  const html = `<a style='font-size: 17px' href='${url}'>공지 바로가기</a>`;
+  for(let i = 0; i < bccs; i++) {
+    const params = generateParams(bccs[i], subject, html, url);
+
+    ses.sendEmail(params, (err, data) => {
+      if(err) console.log(err);
+      else console.log(getDate(), `${idx} Notification Email Sent!`, bccs[i]);
+    });
+  }
+}
 
 exports.sendNotification = function(idx, subject, url) {
   storage.getMails()
@@ -58,13 +85,7 @@ exports.sendNotification = function(idx, subject, url) {
         return;
       }
 
-      const html = `<a style='font-size: 17px' href='${url}'>공지 바로가기</a>`;
-      const params = generateParams(bcc, subject, html, url);
-
-      ses.sendEmail(params, (err, data) => {
-        if(err) console.log(err);
-        else console.log(getDate(), `${idx} Notification Email Sent!`);
-      });
+      sendDistributedNotification(bcc, idx, subject, url);
     });
 };
 
