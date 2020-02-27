@@ -71,7 +71,7 @@ function sendDistributedNotification(emails, idx, subject, url) {
 
     ses.sendEmail(params, (err, data) => {
       if(err) console.log(err);
-      else console.log(getDate(), `${idx} Notification Email Sent!`, bccs[i]);
+      else console.log(getDate(), `${idx} Notification Email Sent!`, bccs[i].length);
     });
   }
 }
@@ -83,7 +83,7 @@ exports.sendNotification = function(idx, subject, url) {
         console.log(getDate(), 'Failed to get subscribers from S3');
         return;
       }
-      console.log(getDate(), 'Start Sending Notification Email of ', idx);
+      console.log(getDate(), 'Start Sending Notification Emails of ', idx, ', total : ', bcc.length);
       sendDistributedNotification(bcc, idx, subject, url);
     });
 };
@@ -96,7 +96,7 @@ exports.sendVerificationMail = async function(email, url, forWhat) {
 
   ses.sendEmail(params, (err, data) => {
     if(err) console.log(err);
-    else console.log(getDate(), 'Verification Email Sent!');
+    else console.log(getDate(), 'Verification Email Sent! -> ', email);
   });
 
 };
