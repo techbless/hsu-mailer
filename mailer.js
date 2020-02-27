@@ -65,10 +65,8 @@ function divideArray(arr, n) {
 
 function sendDistributedNotification(emails, idx, subject, url) {
   const bccs = divideArray(emails, 30);
-
   const html = `<a style='font-size: 17px' href='${url}'>공지 바로가기</a>`;
-  for(let i = 0; i < bccs; i++) {
-    console.log(`length of bccs[${i}] : ${bccs.length}`);
+  for(let i = 0; i < bccs.length; i++) {
     const params = generateParams(bccs[i], subject, html, url);
 
     ses.sendEmail(params, (err, data) => {
