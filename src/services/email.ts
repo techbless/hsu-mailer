@@ -2,6 +2,7 @@ import * as AWS from 'aws-sdk';
 import * as ejs from 'ejs';
 import Subscriber from '../models/subscriber';
 import TokenService from '../services/token';
+import SubscriptionService from '../services/subscription';
 
 import { Purpose } from '../models/token';
 
@@ -93,20 +94,45 @@ class EmailService {
     this.sendEmail(params);
   }
 
-  private distributeEmails(subscribers: Subscriber[], nEach: number = 30) {
-    const nSubscribers = subscribers.length;
-    const nDistributed = Math.floor(nSubscribers / nEach);
+
+  private extractEmails(subscribers: Subscriber[]) {
+    return subscribers.map((subscriber) => subscriber.email);
+  }
+
+  private distributeEmails(emails: string[], nEach: number = 30) {
+    const nEmails = emails.length;
+    const nDistributed = Math.floor(nEmails / nEach);
 
     const distributedEmails = [];
 
     for (let i = 0; i <= nDistributed; i += 1) {
-      const spliced = subscribers.splice(0, nEach);
+      const spliced = emails.splice(0, nEach);
       if (spliced.length !== 0) {
         distributedEmails.push(spliced);
       }
     }
 
     return distributedEmails;
+  }
+
+  public async sendNotificationEmail(title: string, link: string) {
+    const subject = title;
+    const text = link;
+    const html = await ejs.renderFile(
+      `${this.templateLocation}/notification.ejs`, {
+        link,
+      },
+    );
+
+    const verifiedSubscribers = await SubscriptionService.getVerifiedSubscribers();
+    const emails = this.extractEmails(verifiedSubscribers);
+    const bccs = this.distributeEmails(emails);
+
+    for (let i = 0; i < bccs.length; i += 1) {
+      const params = this.generateParams(bccs[i], subject, html, text);
+
+      this.sendEmail(params);
+    }
   }
 }
 
