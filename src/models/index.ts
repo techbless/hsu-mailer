@@ -1,14 +1,14 @@
-import Email, { associate as associateEmail } from './email';
+import Subscriber, { associate as associateSubscriber } from './subscriber';
 import Token, { associate as associateToken } from './token';
 
 export * from './sequelize';
 
 const db = {
-  Email,
+  Subscriber,
   Token,
 };
 
 export type dbType = typeof db;
 
-associateEmail(db);
+associateSubscriber(db);
 associateToken(db);

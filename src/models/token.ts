@@ -2,12 +2,16 @@ import { Model, DataTypes } from 'sequelize';
 import { sequelize } from './sequelize';
 import { dbType } from './index';
 
+export type Purpose = 'subscribe' | 'unsubscribe' | null;
+
 class Token extends Model {
     public readonly tokenId!: number;
 
-    public emailId!: number;
+    public subscriberId!: number;
 
     public token!: string;
+
+    public purpose!: Purpose;
 
     public readonly createdAt!: Date;
 
@@ -25,6 +29,10 @@ Token.init({
     allowNull: false,
     unique: false,
   },
+  purpose: {
+    type: DataTypes.STRING(25),
+    allowNull: false,
+  },
 }, {
   sequelize,
   modelName: 'Token',
@@ -34,7 +42,7 @@ Token.init({
 });
 
 export const associate = (db: dbType) => {
-  Token.belongsTo(db.Email, { as: 'email', foreignKey: 'emailId' });
+  Token.belongsTo(db.Subscriber, { as: 'subscriber', foreignKey: 'subscriberId' });
 };
 
 export default Token;
