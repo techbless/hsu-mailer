@@ -41,14 +41,15 @@ class UpdateChecker {
   private async getNotifications() {
     const result = await this.page.evaluate(() => {
       const notifications: Notification[] = [];
+      const trs = $('tr');
 
-      $('tr').each(function (index, element) {
-        const idx = $(this)
+      trs.each((index, element) => {
+        const idx = $(element)
           .find('td')
           .first()
           .text()
           .trim();// Get a each post-id from the webpage.
-        const subject = $(this).find('td.subject > a');
+        const subject = $(element).find('td.subject > a');
         const title = subject.text();
         const link = subject.attr('href')!;
         notifications.push({
@@ -65,8 +66,6 @@ class UpdateChecker {
   }
 
   public async checkAndSendEmail() {
-    console.log('start Check');
-
     const beforeLatestIdx = await NotficationHistoryService.getLatestIdx();
     const notificationPosts = await this.getNotifications();
 
@@ -85,13 +84,14 @@ class UpdateChecker {
         NotficationHistoryService.addHistory(idx, title, link);
       }
     });
-    console.log('end Check');
   }
 
   public checkEvery(min: number) {
     console.log(`Start checking new post every ${min}min from now on.`);
-    cron.schedule(`*/${min} * * * * *`, async () => {
+    cron.schedule(`*/${min} * * * *`, async () => {
+      console.log('Start Check');
       await this.checkAndSendEmail();
+      console.log('End Check');
     });
   }
 }
