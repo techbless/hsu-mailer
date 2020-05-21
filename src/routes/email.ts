@@ -8,6 +8,8 @@ class EmailRouter {
     this.router = Router();
 
     this.router.post('/emails/subscribe', EmailController.subscribe);
+    this.router.post('/emails/unsubscribe', EmailController.unsubscribe);
+    this.router.get('/verify/email/:email/:token', EmailController.verify);
   }
 }
 
