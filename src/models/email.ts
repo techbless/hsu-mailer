@@ -38,7 +38,7 @@ Email.init({
 });
 
 export const associate = (db: dbType) => {
-  Email.hasMany(db.Token);
+  Email.hasMany(db.Token, { foreignKey: 'emailId' });
 };
 
 export default Email;

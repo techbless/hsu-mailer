@@ -5,6 +5,8 @@ import { dbType } from './index';
 class Token extends Model {
     public readonly tokenId!: number;
 
+    public emailId!: number;
+
     public token!: string;
 
     public readonly createdAt!: Date;
@@ -21,7 +23,7 @@ Token.init({
   token: {
     type: DataTypes.STRING(50),
     allowNull: false,
-    unique: true,
+    unique: false,
   },
 }, {
   sequelize,
@@ -32,7 +34,7 @@ Token.init({
 });
 
 export const associate = (db: dbType) => {
-  Token.belongsTo(db.Email);
+  Token.belongsTo(db.Email, { as: 'email', foreignKey: 'emailId' });
 };
 
 export default Token;
