@@ -1,7 +1,9 @@
 import * as AWS from 'aws-sdk';
 import * as ejs from 'ejs';
-import Email from '../models/email';
+import Subscriber from '../models/subscriber';
 import TokenService from '../services/token';
+
+import { Purpose } from '../models/token';
 
 class EmailService {
   private ses: AWS.SES;
@@ -17,31 +19,6 @@ class EmailService {
 
     this.ses = new AWS.SES();
     this.templateLocation = `${__dirname}/../templates`;
-  }
-
-  public findEmailByAddress(email: string) {
-    return Email.findOne({
-      where: {
-        email,
-      },
-    });
-  }
-
-  public async checkSubscription(email: string) {
-    const emailFromDB = await this.findEmailByAddress(email);
-
-    console.log(emailFromDB);
-    if (emailFromDB) {
-      return true;
-    }
-    return false;
-  }
-
-  public subscribe(email: string) {
-    return Email.create({
-      email,
-      isAuthenticated: false,
-    });
   }
 
   private generateParams(bcc: string[], subject: string, html: string, text: string) {
@@ -95,12 +72,16 @@ class EmailService {
     this.sendEmail(params);
   }
 
-  public async sendVerificationEmail(email: Email, purpose: string) {
-    const token = await TokenService.issueToken(email.emailId);
+  public async sendVerificationEmail(subscriber: Subscriber, purpose: string) {
+    let purposeForDB: Purpose = null;
+    if (purpose === '구독') purposeForDB = 'subscribe';
+    else if (purpose === '구독취소') purposeForDB = 'unsubscribe';
 
-    const bcc = [email.email];
+    const token = await TokenService.issueToken(subscriber.subscriberId, purposeForDB);
+
+    const bcc = [subscriber.email];
     const subject = `${purpose}(을)를 위해 이메일 인증을 완료해주세요.`;
-    const verificationUrl = `https://${process.env.SITE_URL}/verify/subscription/${email.email}/${token}`;
+    const verificationUrl = `https://${process.env.SITE_URL}/verify/email/${subscriber.email}/${token}?purpose=${purposeForDB}`;
     const html = await ejs.renderFile(
       `${this.templateLocation}/verification.ejs`, {
         purpose,
@@ -112,14 +93,14 @@ class EmailService {
     this.sendEmail(params);
   }
 
-  private distributeEmails(emails: Email[], nEach: number = 30) {
-    const nEmails = emails.length;
-    const nDistributed = Math.floor(nEmails / nEach);
+  private distributeEmails(subscribers: Subscriber[], nEach: number = 30) {
+    const nSubscribers = subscribers.length;
+    const nDistributed = Math.floor(nSubscribers / nEach);
 
     const distributedEmails = [];
 
     for (let i = 0; i <= nDistributed; i += 1) {
-      const spliced = emails.splice(0, nEach);
+      const spliced = subscribers.splice(0, nEach);
       if (spliced.length !== 0) {
         distributedEmails.push(spliced);
       }
