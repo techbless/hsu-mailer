@@ -100,7 +100,7 @@ class EmailService {
 
     const bcc = [email.email];
     const subject = `${purpose}(을)를 위해 이메일 인증을 완료해주세요.`;
-    const verificationUrl = `https://${process.env.SITE_URL}/verify/subscription/${email}/${token}`;
+    const verificationUrl = `https://${process.env.SITE_URL}/verify/subscription/${email.email}/${token}`;
     const html = await ejs.renderFile(
       `${this.templateLocation}/verification.ejs`, {
         purpose,
