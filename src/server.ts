@@ -18,14 +18,16 @@ async function startAll() {
   try {
     await sequelize.sync({ force: false });
 
+    const PERIOD_IN_MIN = 10;
     updateChecker.setUrl('http://www.hansung.ac.kr/web/www/1323');
     await updateChecker.initialize();
-    setScheduler(updateChecker.checkAndSendEmail, 10);
+    setScheduler(updateChecker.checkAndSendEmail, PERIOD_IN_MIN);
+    console.log('Scheduler Set: Check new post every ', PERIOD_IN_MIN, 'min');
 
     const PORT: number = +process.env.PORT! || 3000;
     app.listen(PORT, (err) => {
       if (err) throw err;
-      console.log('Server Start: Listen on port ', PORT);
+      console.log('Server Started: Listen on port ', PORT);
     });
   } catch (error) {
     console.log('Error! Failed to start the server.');
