@@ -10,11 +10,15 @@ interface Notification {
 }
 
 class UpdateChecker {
-  private url: string;
+  private url!: string;
 
   private page!: puppeteer.Page;
 
-  constructor(url: string) {
+  constructor() {
+    this.checkAndSendEmail = this.checkAndSendEmail.bind(this);
+  }
+
+  public setUrl(url: string) {
     this.url = url;
   }
 
@@ -66,10 +70,12 @@ class UpdateChecker {
   }
 
   public async checkAndSendEmail() {
+    console.log('Start Checking');
+
     const beforeLatestIdx = await NotficationHistoryService.getLatestIdx();
     const notificationPosts = await this.getNotifications();
 
-    console.log(notificationPosts);
+    // console.log(notificationPosts);
     notificationPosts.forEach((elm) => {
       const { idx, title, link } = elm;
 
@@ -84,16 +90,9 @@ class UpdateChecker {
         NotficationHistoryService.addHistory(idx, title, link);
       }
     });
-  }
 
-  public checkEvery(min: number) {
-    console.log(`Start checking new post every ${min}min from now on.`);
-    cron.schedule(`*/${min} * * * *`, async () => {
-      console.log('Start Check');
-      await this.checkAndSendEmail();
-      console.log('End Check');
-    });
+    console.log('End Checking');
   }
 }
 
-export default UpdateChecker;
+export default new UpdateChecker();

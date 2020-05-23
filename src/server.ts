@@ -3,22 +3,34 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-import UpdateChecker from './modules/updateChecker';
+import * as cron from 'node-cron';
+import updateChecker from './modules/updateChecker';
 import { sequelize } from './models/index';
 import app from './app';
 
-sequelize.sync({ force: false })
-  .then(async () => {
-    const updateChecker = new UpdateChecker('http://www.hansung.ac.kr/web/www/1323');
+function setScheduler(func: Function, min: number) {
+  cron.schedule(`*/${min} * * * *`, () => {
+    func();
+  });
+}
+
+async function startAll() {
+  try {
+    await sequelize.sync({ force: false });
+
+    updateChecker.setUrl('http://www.hansung.ac.kr/web/www/1323');
     await updateChecker.initialize();
-    updateChecker.checkEvery(10); // min
+    setScheduler(updateChecker.checkAndSendEmail, 10);
 
     const PORT: number = +process.env.PORT! || 3000;
     app.listen(PORT, (err) => {
       if (err) throw err;
-      else console.log('Server Start: Listen on port ', PORT);
+      console.log('Server Start: Listen on port ', PORT);
     });
-  })
-  .catch(() => {
-    console.log('There were some error during sequelize.sync()');
-  });
+  } catch (error) {
+    console.log('Error! Failed to start the server.');
+    console.log(error);
+  }
+}
+
+startAll();
