@@ -20,6 +20,17 @@ class SubscriptionService {
     await subscriber?.destroy();
   }
 
+  public async verifySubscription(email: string) {
+    const subscriber = await Subscriber.findOne({
+      where: {
+        email,
+      },
+    });
+
+    subscriber!.isVerified = true;
+    await subscriber!.save();
+  }
+
   public async getVerifiedSubscribers() {
     return Subscriber.findAll({
       where: {

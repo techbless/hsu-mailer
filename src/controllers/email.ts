@@ -53,17 +53,22 @@ class EmailController {
     const { email, token } = req.params;
     const { purpose } = req.query;
 
-    if (purpose !== 'subscribe' && purpose !== 'unsubscribe') {
+    if (!await TokenService.verifyToken(email, token, purpose as Purpose)) {
       return res.render('result', {
-        title: '잘못된 요청입니다.',
-        content: '올바르지 않은 인증 요청 형식입니다.',
+        title: '인증 실패',
+        content: '인증을 실패했습니다. 다시 확인해주세요.',
       });
     }
 
-    if (!await TokenService.verifyToken(email, token, purpose as Purpose)) {
-      return res.render('result', {
-        title: '메일 인증 실패',
-        content: '인증을 실패했습니다. 다시 확인해주세요.',
+    if (purpose === 'subscribe') {
+      const verify = SubscriptionService.verifySubscription(email);
+      const sendMail = EmailService.sendWelcomeEmail(email);
+
+      await Promise.all([verify, sendMail]);
+
+      res.render('result', {
+        title: '구독 성공',
+        content: '비교과 공지 알림 구독을 성공적으로 마쳤습니다. 이제 새로운 공지를 편하게 확인하세요.',
       });
     }
 
@@ -74,12 +79,6 @@ class EmailController {
         content: '비교과 공지 알림 구독을 취소했습니다. 더이상 알림을 받을 수 없습니다.',
       });
     }
-
-    res.render('result', {
-      title: '구독 성공',
-      content: '비교과 공지 알림 구독을 성공적으로 마쳤습니다. 이제 새로운 공지를 편하게 확인하세요.',
-    });
-    await EmailService.sendWelcomeEmail(email);
   }
 }
 

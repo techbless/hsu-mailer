@@ -16,7 +16,7 @@ class TokenService {
     return issuedToken.token;
   }
 
-  public async verifyToken(email: string, tokenFromLink: string, purpose: Purpose) {
+  public async verifyToken(email: string, tokenFromLink: string, purpose: Purpose): Promise<boolean> {
     const subscriber = await SubscriptionService.findSubscriberByAddress(email);
 
     if (!subscriber) {
@@ -36,8 +36,8 @@ class TokenService {
     }
 
     token[0].destroy();
-    subscriber.isVerified = true;
-    subscriber.save();
+    // subscriber.isVerified = true;
+    // subscriber.save();
 
     return true;
   }
