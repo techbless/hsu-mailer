@@ -5,7 +5,7 @@ import TokenService from '../services/token';
 import EmailService from '../services/email';
 import SubscriptionService from '../services/subscription';
 
-import { TokenStrategy, SubscribeStrategy, UnSubscribeStrategy } from '../tokenStrategy';
+import { TokenStrategy, SubscribeStrategy, UnSubscribeStrategy } from '../services/token_strategies';
 
 import { Purpose } from '../models/token';
 

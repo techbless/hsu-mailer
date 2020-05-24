@@ -1,6 +1,6 @@
 import TokenStrategy from './tokenStrategy';
-import SubscriptionService from '../services/subscription';
-import EmailService from '../services/email';
+import SubscriptionService from '../subscription';
+import EmailService from '../email';
 
 export class SubscribeStrategy implements TokenStrategy {
   public doTasks(email: string) {
