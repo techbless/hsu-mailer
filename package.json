@@ -1,6 +1,6 @@
 {
-  "name": "typescript-express-starter",
-  "version": "1.0.0",
+  "name": "hsu-mailer",
+  "version": "2.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
