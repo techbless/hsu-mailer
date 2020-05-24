@@ -34,7 +34,7 @@ class EmailController {
   public async unsubscribe(req: Request, res: Response) {
     const { email } = req.body;
 
-    const subscriber = await SubscriptionService.findSubscriberByAddress(email);
+    const subscriber = await SubscriptionService.findSubscriberByEmail(email);
 
     if (!subscriber) {
       return res.render('result', {

@@ -17,7 +17,7 @@ class TokenService {
   }
 
   public async verifyToken(email: string, tokenFromLink: string, purpose: Purpose): Promise<boolean> {
-    const subscriber = await SubscriptionService.findSubscriberByAddress(email);
+    const subscriber = await SubscriptionService.findSubscriberByEmail(email);
 
     if (!subscriber) {
       return false;

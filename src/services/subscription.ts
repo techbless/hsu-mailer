@@ -40,7 +40,7 @@ class SubscriptionService {
   }
 
   public async checkSubscription(email: string) {
-    const subscriber = await this.findSubscriberByAddress(email);
+    const subscriber = await this.findSubscriberByEmail(email);
 
     if (subscriber) {
       return true;
@@ -48,7 +48,7 @@ class SubscriptionService {
     return false;
   }
 
-  public findSubscriberByAddress(email: string) {
+  public findSubscriberByEmail(email: string) {
     return Subscriber.findOne({
       where: {
         email,
