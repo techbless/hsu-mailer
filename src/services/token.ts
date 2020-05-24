@@ -36,9 +36,6 @@ class TokenService {
     }
 
     token[0].destroy();
-    // subscriber.isVerified = true;
-    // subscriber.save();
-
     return true;
   }
 }
