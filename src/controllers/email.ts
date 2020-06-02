@@ -5,7 +5,8 @@ import TokenService from '../services/token';
 import EmailService from '../services/email';
 import SubscriptionService from '../services/subscription';
 
-import { TokenStrategy, SubscribeStrategy, UnSubscribeStrategy } from '../services/token_strategies';
+// import { TokenStrategy, SubscribeStrategy, UnSubscribeStrategy } from '../services/token_strategies';
+import { TokenCommand, SubscribeCommand, UnSubscribeCommand } from '../services/token_commands';
 
 import { Purpose } from '../models/token';
 
@@ -54,7 +55,7 @@ class EmailController {
   public async verify(req: Request, res: Response) {
     const { email, token } = req.params;
     const { purpose } = req.query;
-    let tokenStrategy!: TokenStrategy;
+    let tokenCommand!: TokenCommand;
 
     if (!await TokenService.verifyToken(email, token, purpose as Purpose)) {
       return res.render('result', {
@@ -64,14 +65,14 @@ class EmailController {
     }
 
     if (purpose === 'subscribe') {
-      tokenStrategy = new SubscribeStrategy();
+      tokenCommand = new SubscribeCommand(email);
 
       res.render('result', {
         title: '구독 성공',
         content: '비교과 공지 알림 구독을 성공적으로 마쳤습니다. 이제 새로운 공지를 편하게 확인하세요.',
       });
     } else if (purpose === 'unsubscribe') {
-      tokenStrategy = new UnSubscribeStrategy();
+      tokenCommand = new UnSubscribeCommand(email);
 
       res.render('result', {
         title: '구독취소 성공',
@@ -79,7 +80,7 @@ class EmailController {
       });
     }
 
-    tokenStrategy.doTasks(email);
+    tokenCommand.execute();
   }
 }
 

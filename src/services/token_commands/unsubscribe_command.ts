@@ -1,7 +1,7 @@
 import TokenCommand from './token_command';
 import SubscriptionService from '../subscription';
 
-class UnSubscribeCommand implements TokenCommand {
+export class UnSubscribeCommand implements TokenCommand {
   private email: string;
 
   constructor(email: string) {
@@ -12,3 +12,5 @@ class UnSubscribeCommand implements TokenCommand {
     SubscriptionService.unsubscribe(this.email);
   }
 }
+
+export default UnSubscribeCommand;

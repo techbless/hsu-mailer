@@ -1,4 +1,4 @@
-interface TokenCommand {
+export interface TokenCommand {
   execute: () => void;
 }
 

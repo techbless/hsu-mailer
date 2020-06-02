@@ -2,7 +2,7 @@ import TokenCommand from './token_command';
 import SubscriptionService from '../subscription';
 import EmailService from '../email';
 
-class SubscribeCommand implements TokenCommand {
+export class SubscribeCommand implements TokenCommand {
   private email: string;
 
   constructor(email: string) {
@@ -15,3 +15,5 @@ class SubscribeCommand implements TokenCommand {
     Promise.all([verify, sendMail]);
   }
 }
+
+export default SubscribeCommand;
