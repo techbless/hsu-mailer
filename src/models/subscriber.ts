@@ -9,6 +9,8 @@ class Subscriber extends Model {
 
     public email!: string;
 
+    public password!: string;
+
     public isVerified!: boolean;
 
     public readonly createdAt!: Date;
@@ -23,11 +25,16 @@ Subscriber.init({
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
+    allowNull: false,
   },
   email: {
     type: DataTypes.STRING(50),
     allowNull: false,
     unique: true,
+  },
+  password: {
+    type: DataTypes.STRING(50),
+    allowNull: true,
   },
   isVerified: {
     type: DataTypes.BOOLEAN,
