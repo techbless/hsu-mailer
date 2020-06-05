@@ -1,6 +1,7 @@
 import { Router, Response, Request } from 'express';
 
 import * as passportConfig from '../config/passport';
+import DashBoardController from '../controllers/dashboard';
 
 class DashBoardRouter {
   public router!: Router;
@@ -8,9 +9,7 @@ class DashBoardRouter {
   constructor() {
     this.router = Router();
 
-    this.router.post('/dashboard', passportConfig.isAuthenticated, (req: Request, res: Response) => {
-      res.send('DashBoard is not implemented yet.');
-    });
+    this.router.get('/dashboard', passportConfig.isAuthenticated, DashBoardController.getDashBoard);
   }
 }
 
