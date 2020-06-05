@@ -4,6 +4,8 @@ import * as passport from 'passport';
 import * as helmet from 'helmet';
 
 import EmailRouter from './routes/email';
+import AuthRouter from './routes/auth';
+import DashBoardRouter from './routes/dashboard';
 
 class App {
   public app!: express.Application;
@@ -21,7 +23,21 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
 
+
+    this.app.use(
+      session({
+        resave: true,
+        saveUninitialized: true,
+        secret: 'SDF32SDFdslkjfj238uyF',
+      }),
+    );
+
+    this.app.use(passport.initialize());
+    this.app.use(passport.session());
+
     this.app.use('/', EmailRouter);
+    this.app.use('/', AuthRouter);
+    this.app.use('/', DashBoardRouter);
   }
 }
 
