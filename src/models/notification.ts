@@ -3,17 +3,17 @@ import { sequelize } from './sequelize';
 import { dbType } from './index';
 
 class Notification extends Model {
-    public readonly notificationId!: number;
+  public readonly notificationId!: number;
 
-    public webpostIdx!: number;
+  public webpostIdx!: number;
 
-    public title!: string;
+  public title!: string;
 
-    public link!: string;
+  public link!: string;
 
-    public readonly createdAt!: Date;
+  public readonly createdAt!: Date;
 
-    public readonly updatedAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
 Notification.init({

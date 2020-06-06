@@ -5,19 +5,19 @@ import { dbType } from './index';
 import Token from './token';
 
 class Subscriber extends Model {
-    public readonly subscriberId!: number;
+  public readonly subscriberId!: number;
 
-    public email!: string;
+  public email!: string;
 
-    public password!: string;
+  public password!: string;
 
-    public isVerified!: boolean;
+  public isVerified!: boolean;
 
-    public readonly createdAt!: Date;
+  public readonly createdAt!: Date;
 
-    public readonly updatedAt!: Date;
+  public readonly updatedAt!: Date;
 
-    public getTokens!: HasManyGetAssociationsMixin<Token>;
+  public getTokens!: HasManyGetAssociationsMixin<Token>;
 }
 
 Subscriber.init({
