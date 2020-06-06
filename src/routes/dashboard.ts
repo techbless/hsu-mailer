@@ -10,6 +10,7 @@ class DashBoardRouter {
     this.router = Router();
 
     this.router.get('/dashboard', passportConfig.isAuthenticated, DashBoardController.getDashBoard);
+    this.router.post('/update/receiving_day', passportConfig.isAuthenticated, DashBoardController.updateReceivingDays);
   }
 }
 
