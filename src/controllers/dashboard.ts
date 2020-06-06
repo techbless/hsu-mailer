@@ -9,10 +9,41 @@ class DashBoardController {
     console.log(req.user);
     const receivingDays = await ReceivingDayService.getReceivingDays(req.user!.subscriberId);
 
-    console.log(receivingDays);
     res.render('dashboard', {
       receivingDays,
     });
+  }
+
+
+  @AsyncHandled
+  public async updateReceivingDays(req: Request, res: Response) {
+    const {
+      sun, mon, tue, wed, thu, fri, sat,
+    } = req.body;
+
+    const daysInString = [sun, mon, tue, wed, thu, fri, sat];
+
+    // "on" should be true
+    const daysInBool: boolean[] = daysInString.map((day: string) => {
+      if (day === 'on') {
+        return true;
+      }
+      return false;
+    });
+
+    await ReceivingDayService.updateReceivingDays(
+      req.user!.subscriberId, {
+        sunday: daysInBool[0],
+        monday: daysInBool[1],
+        tuesday: daysInBool[2],
+        wednesday: daysInBool[3],
+        thursday: daysInBool[4],
+        friday: daysInBool[5],
+        saturday: daysInBool[6],
+      },
+    );
+
+    res.redirect('/dashboard');
   }
 }
 
