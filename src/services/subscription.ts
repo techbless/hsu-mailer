@@ -1,6 +1,7 @@
 import * as AWS from 'aws-sdk';
 import * as ejs from 'ejs';
 import Subscriber from '../models/subscriber';
+import ReceivingDays from '../models/receiving_days';
 
 class SubscriptionService {
   public subscribe(email: string) {
@@ -18,6 +19,26 @@ class SubscriptionService {
     });
 
     await subscriber?.destroy();
+  }
+
+  public async setDefaultReceivingDays(email: string) {
+    const subscriber = await Subscriber.findOne({
+      where: {
+        email,
+      },
+    });
+
+
+    ReceivingDays.create({
+      subscriberId: subscriber!.subscriberId,
+      sunday: true,
+      monday: true,
+      tuesday: true,
+      wednesday: true,
+      thursday: true,
+      friday: true,
+      saturday: true,
+    });
   }
 
 
