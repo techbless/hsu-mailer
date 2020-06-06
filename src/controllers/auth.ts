@@ -19,6 +19,12 @@ class AuthController {
       });
     })(req, res, next);
   }
+
+  @AsyncHandled
+  public async logout(req: Request, res: Response) {
+    req.logout();
+    res.redirect('/');
+  }
 }
 
 export default new AuthController();
