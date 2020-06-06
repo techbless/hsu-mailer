@@ -50,6 +50,7 @@ Subscriber.init({
 
 export const associate = (db: dbType) => {
   Subscriber.hasMany(db.Token, { foreignKey: 'subscriberId' });
+  Subscriber.hasOne(db.ReceivingDays, { foreignKey: 'subscriberId' });
 };
 
 export default Subscriber;
