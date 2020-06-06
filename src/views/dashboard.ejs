@@ -63,7 +63,7 @@
               <div class="section">
                 <div class="container-fluid">
                   <h5>요일별 수신 거부 설정</h5><hr><br>
-                  <form action="/dayofweek">
+                  <form method="post" action="/update/receiving_day">
                     <table width="60%" class="dayofweek mx-auto">
                       <thead>
                         <tr>
@@ -80,49 +80,49 @@
                         <tr>
                           <td>
                             <input 
-                              type="checkbox" name="sun" id="sun"
+                              type="checkbox" name="sun" id="sun" value="on"
                               <% let checked = receivingDays.sunday ? 'checked' : '' %>
                               <%= checked %>
                             >
                           </td>
                           <td>
                             <input 
-                              type="checkbox" name="mon" id="mon"
+                              type="checkbox" name="mon" id="mon" value="on"
                               <% checked = receivingDays.monday ? 'checked' : '' %>
                               <%= checked %>
                             >
                           </td>
                           <td>
                             <input 
-                              type="checkbox" name="tue" id="tue"
+                              type="checkbox" name="tue" id="tue" value="on"
                               <% checked = receivingDays.tuesday ? 'checked' : '' %>
                               <%= checked %>
                             >
                           </td>
                           <td>
                             <input
-                              type="checkbox" name="wed" id="wed"
+                              type="checkbox" name="wed" id="wed" value="on"
                               <% checked = receivingDays.wednesday ? 'checked' : '' %>
                               <%= checked %>
                             >
                           </td>
                           <td>
                             <input
-                              type="checkbox" name="thu" id="thu"
+                              type="checkbox" name="thu" id="thu" value="on"
                               <% checked = receivingDays.thursday ? 'checked' : '' %>
                               <%= checked %>
                             >
                           </td>
                           <td>
                             <input
-                              type="checkbox" name="fri" id="fri"
+                              type="checkbox" name="fri" id="fri" value="on"
                               <% checked = receivingDays.friday ? 'checked' : '' %>
                               <%= checked %>
                             >
                           </td>
                           <td>
                             <input
-                              type="checkbox" name="sat" id="sat"
+                              type="checkbox" name="sat" id="sat" value="on"
                               <% checked = receivingDays.saturday ? 'checked' : '' %>
                               <%= checked %>
                             >
@@ -144,7 +144,7 @@
                 <h5>키워드 필터링</h5><hr><br>
 
                 이 기능은 아직 지원되지 않습니다.
-              </div
+              </div>
             </div>
         </div>
 
