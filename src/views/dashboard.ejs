@@ -1,11 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <%= message %>
-</body>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <title>비교과 공지 맞춤설정</title>
+
+        <!-- Bootstrap CSS CDN -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <!-- Our Custom CSS -->
+        <link rel="stylesheet" href="/css/dashboard.css">
+        <!-- Scrollbar Custom CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="wrapper">
+            <!-- Sidebar Holder -->
+            <nav id="sidebar">
+                <div class="sidebar-header text-center">
+                    <h3>알림 맞춤 설정</h3></h3>
+                </div>
+
+                <hr>
+
+                <ul class="list-unstyled components text-center">
+                    <li>
+                        <a href="#">요일별 수신 거부</a>
+                    </li>
+                    <li>
+                        <a href="#">키워드 필터링</a>
+                    </li>
+                    <li>
+                        <a href="#">추후 추가 예정</a>
+                    </li>
+                    
+                    <hr>
+
+                    <li>
+                      <a href="/logout">로그아웃</a>
+                    </li>
+                    
+                    <hr>
+                </ul>
+            </nav>
+
+            <!-- Page Content Holder -->
+            <div id="content">
+              <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                  <div class="navbar-header">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
+                      <i class="fa fa-align-left" aria-hidden="true"></i>
+                      <span>Menu</span>
+                    </button>
+                  </div>
+                  <h5>비교과 공지 맞춤 설정</h5>
+                </div>
+              </nav>
+
+              <div class="section">
+                <div class="container-fluid">
+                    <h5>요일별 수신 거부 설정</h5><br><br>
+                    <form action="/dayofweek">
+                      <table width="60%" class="dayofweek mx-auto">
+                        <thead>
+                          <tr>
+                            <th>일</th>
+                            <th>월</th>
+                            <th>화</th>
+                            <th>수</th>
+                            <th>목</th>
+                            <th>금</th>
+                            <th>토</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="sun" id="sun">
+                            </td>
+                            <td>
+                              <input type="checkbox" name="mon" id="mon">
+                            </td>
+                            <td>
+                              <input type="checkbox" name="tue" id="tue">
+                            </td>
+                            <td>
+                              <input type="checkbox" name="wed" id="wed">
+                            </td>
+                            <td>
+                              <input type="checkbox" name="thu" id="thu">
+                            </td>
+                            <td>
+                              <input type="checkbox" name="fri" id="fri">
+                            </td>
+                            <td>
+                              <input type="checkbox" name="sat" id="sat">
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                      <br><br>
+
+                      <div class="text-right">
+                        <input type="submit" value="저장" class="btn btn-info">
+                      </div>
+                    </form>
+                </div>
+              </div>
+            </div>
+
+        </div>
+
+
+
+
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+               
+
+                $('#sidebarCollapse').on('click', function () {
+                    $('#sidebar, #content').toggleClass('active');
+                    $('.collapse.in').toggleClass('in');
+                    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+                });
+            });
+        </script>
+    </body>
 </html>
