@@ -62,57 +62,90 @@
 
               <div class="section">
                 <div class="container-fluid">
-                    <h5>요일별 수신 거부 설정</h5><br><br>
-                    <form action="/dayofweek">
-                      <table width="60%" class="dayofweek mx-auto">
-                        <thead>
-                          <tr>
-                            <th>일</th>
-                            <th>월</th>
-                            <th>화</th>
-                            <th>수</th>
-                            <th>목</th>
-                            <th>금</th>
-                            <th>토</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>
-                              <input type="checkbox" name="sun" id="sun">
-                            </td>
-                            <td>
-                              <input type="checkbox" name="mon" id="mon">
-                            </td>
-                            <td>
-                              <input type="checkbox" name="tue" id="tue">
-                            </td>
-                            <td>
-                              <input type="checkbox" name="wed" id="wed">
-                            </td>
-                            <td>
-                              <input type="checkbox" name="thu" id="thu">
-                            </td>
-                            <td>
-                              <input type="checkbox" name="fri" id="fri">
-                            </td>
-                            <td>
-                              <input type="checkbox" name="sat" id="sat">
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                  <h5>요일별 수신 거부 설정</h5><hr><br>
+                  <form action="/dayofweek">
+                    <table width="60%" class="dayofweek mx-auto">
+                      <thead>
+                        <tr>
+                          <th>일</th>
+                          <th>월</th>
+                          <th>화</th>
+                          <th>수</th>
+                          <th>목</th>
+                          <th>금</th>
+                          <th>토</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <input 
+                              type="checkbox" name="sun" id="sun"
+                              <% let checked = receivingDays.sunday ? 'checked' : '' %>
+                              <%= checked %>
+                            >
+                          </td>
+                          <td>
+                            <input 
+                              type="checkbox" name="mon" id="mon"
+                              <% checked = receivingDays.monday ? 'checked' : '' %>
+                              <%= checked %>
+                            >
+                          </td>
+                          <td>
+                            <input 
+                              type="checkbox" name="tue" id="tue"
+                              <% checked = receivingDays.tuesday ? 'checked' : '' %>
+                              <%= checked %>
+                            >
+                          </td>
+                          <td>
+                            <input
+                              type="checkbox" name="wed" id="wed"
+                              <% checked = receivingDays.wednesday ? 'checked' : '' %>
+                              <%= checked %>
+                            >
+                          </td>
+                          <td>
+                            <input
+                              type="checkbox" name="thu" id="thu"
+                              <% checked = receivingDays.thursday ? 'checked' : '' %>
+                              <%= checked %>
+                            >
+                          </td>
+                          <td>
+                            <input
+                              type="checkbox" name="fri" id="fri"
+                              <% checked = receivingDays.friday ? 'checked' : '' %>
+                              <%= checked %>
+                            >
+                          </td>
+                          <td>
+                            <input
+                              type="checkbox" name="sat" id="sat"
+                              <% checked = receivingDays.saturday ? 'checked' : '' %>
+                              <%= checked %>
+                            >
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
 
-                      <br><br>
+                    <br><br>
 
-                      <div class="text-right">
-                        <input type="submit" value="저장" class="btn btn-info">
-                      </div>
-                    </form>
+                    <div class="text-right">
+                      <input type="submit" value="저장" class="btn btn-info">
+                    </div>
+                  </form>
                 </div>
               </div>
-            </div>
 
+              <div class="section">
+                <h5>키워드 필터링</h5><hr><br>
+
+                이 기능은 아직 지원되지 않습니다.
+              </div
+            </div>
         </div>
 
 

@@ -10,9 +10,10 @@ export class SubscribeCommand implements TokenCommand {
   }
 
   public execute() {
+    const setDefaultReceivingDays = SubscriptionService.setDefaultReceivingDays(this.email);
     const verify = SubscriptionService.verifySubscription(this.email);
     const sendMail = EmailService.sendWelcomeEmail(this.email);
-    Promise.all([verify, sendMail]);
+    Promise.all([verify, sendMail, setDefaultReceivingDays]);
   }
 }
 
