@@ -28,7 +28,6 @@ class SubscriptionService {
       },
     });
 
-
     ReceivingDays.create({
       subscriberId: subscriber!.subscriberId,
       sunday: true,
@@ -39,6 +38,17 @@ class SubscriptionService {
       friday: true,
       saturday: true,
     });
+  }
+
+  public async changePassword(email: string, newPassword: string) {
+    const subscriber = await Subscriber.findOne({
+      where: {
+        email,
+      },
+    });
+
+    subscriber!.password = newPassword;
+    subscriber!.save();
   }
 
 
