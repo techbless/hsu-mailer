@@ -10,6 +10,12 @@ class ReceivingDayService {
     });
   }
 
+  public async removeReceivingDays(subscriberId: number) {
+    const receivingDays = await this.getReceivingDays(subscriberId);
+
+    receivingDays!.destroy();
+  }
+
   public async updateReceivingDays(subscriberId: number, {
     sunday, monday, tuesday, wednesday, thursday, friday, saturday,
   }: {

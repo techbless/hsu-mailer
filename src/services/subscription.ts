@@ -11,14 +11,8 @@ class SubscriptionService {
     });
   }
 
-  public async unsubscribe(email: string) {
-    const subscriber = await Subscriber.findOne({
-      where: {
-        email,
-      },
-    });
-
-    await subscriber?.destroy();
+  public async unsubscribe(subscriber: Subscriber) {
+    await subscriber.destroy();
   }
 
   public async setDefaultReceivingDays(subscriber: Subscriber) {

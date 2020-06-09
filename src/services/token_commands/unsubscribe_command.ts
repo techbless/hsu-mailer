@@ -1,15 +1,18 @@
 import TokenCommand from './token_command';
 import SubscriptionService from '../subscription';
+import ReceivingDayService from '../receiving_days';
+import Subscriber from '../../models/subscriber';
 
 export class UnSubscribeCommand implements TokenCommand {
-  private email: string;
+  private subscriber: Subscriber;
 
-  constructor(email: string) {
-    this.email = email;
+  constructor(subscriber: Subscriber) {
+    this.subscriber = subscriber;
   }
 
-  public execute() {
-    SubscriptionService.unsubscribe(this.email);
+  public async execute() {
+    await ReceivingDayService.removeReceivingDays(this.subscriber.subscriberId);
+    await SubscriptionService.unsubscribe(this.subscriber);
   }
 }
 

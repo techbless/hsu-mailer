@@ -78,7 +78,7 @@ class EmailController {
         content: '비교과 공지 알림 구독을 성공적으로 마쳤습니다. 이제 새로운 공지를 편하게 확인하세요.',
       });
     } else if (purpose === 'unsubscribe') {
-      tokenCommand = new UnSubscribeCommand(email);
+      tokenCommand = new UnSubscribeCommand(subscriber!);
 
       res.render('result', {
         title: '구독취소 성공',
