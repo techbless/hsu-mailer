@@ -5,6 +5,9 @@ import * as passport from 'passport';
 import { IVerifyOptions } from 'passport-local';
 import Subscriber from '../models/subscriber';
 
+import EmailService from '../services/email';
+import SubscriptionService from '../services/subscription';
+
 class AuthController {
   @AsyncHandled
   public async login(req: Request, res: Response, next: NextFunction) {
@@ -18,6 +21,21 @@ class AuthController {
         res.redirect('/dashboard');
       });
     })(req, res, next);
+  }
+
+  @AsyncHandled
+  public async sendPasswordMail(req: Request, res: Response) {
+    const { email } = req.body;
+
+    const subscriber = await SubscriptionService.findSubscriberByEmail(email);
+    if (!subscriber) {
+      // 오류 메세지 여기에
+      return;
+    }
+
+    await EmailService.sendVerificationEmail(subscriber, '비밀번호 설정');
+
+    res.send(`${email}로 비밀번호 설정 링크가 발송되었습니다.`);
   }
 
   @AsyncHandled
