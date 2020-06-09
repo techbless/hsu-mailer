@@ -25,7 +25,7 @@ class AuthController {
 
   @AsyncHandled
   public async sendPasswordMail(req: Request, res: Response) {
-    const { email } = req.body;
+    const { email } = req.query;
 
     const subscriber = await SubscriptionService.findSubscriberByEmail(email);
     if (!subscriber) {
@@ -36,6 +36,15 @@ class AuthController {
     await EmailService.sendVerificationEmail(subscriber, '비밀번호 설정');
 
     res.send(`${email}로 비밀번호 설정 링크가 발송되었습니다.`);
+  }
+
+  public async showNewPasswordPage(req: Request, res: Response) {
+    const { email, token } = req.params;
+
+    res.render('new_password', {
+      token,
+      email,
+    });
   }
 
   @AsyncHandled
