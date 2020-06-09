@@ -1,12 +1,10 @@
 import Subscriber from '../models/subscriber';
-import SubscriptionService from '../services/subscription';
 
 class AuthService {
-  public async changePassword(email: string, newPassword: string) {
-    const subscriber = await SubscriptionService.findSubscriberByEmail(email);
-    subscriber!.password = newPassword;
-
-    subscriber!.save();
+  public async changePassword(subscriber: Subscriber, newPassword: string) {
+    subscriber.update({
+      password: newPassword,
+    });
   }
 }
 

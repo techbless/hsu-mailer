@@ -85,7 +85,7 @@ class EmailController {
         content: '비교과 공지 알림 구독을 취소했습니다. 더이상 알림을 받을 수 없습니다.',
       });
     } else if (purpose === 'password') {
-      tokenCommand = new PasswordCommand(email, password);
+      tokenCommand = new PasswordCommand(subscriber!, password);
 
       res.render('result', {
         title: '비밀번호 설정 완료',
