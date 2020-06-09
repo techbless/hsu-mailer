@@ -1,18 +1,19 @@
 import TokenCommand from './token_command';
 import SubscriptionService from '../subscription';
 import EmailService from '../email';
+import Subscriber from '../../models/subscriber';
 
 export class SubscribeCommand implements TokenCommand {
-  private email: string;
+  private subscriber: Subscriber;
 
-  constructor(email: string) {
-    this.email = email;
+  constructor(subscriber: Subscriber) {
+    this.subscriber = subscriber;
   }
 
   public execute() {
-    const setDefaultReceivingDays = SubscriptionService.setDefaultReceivingDays(this.email);
-    const verify = SubscriptionService.verifySubscription(this.email);
-    const sendMail = EmailService.sendWelcomeEmail(this.email);
+    const setDefaultReceivingDays = SubscriptionService.setDefaultReceivingDays(this.subscriber);
+    const verify = SubscriptionService.verifySubscription(this.subscriber);
+    const sendMail = EmailService.sendWelcomeEmail(this.subscriber.email);
     Promise.all([verify, sendMail, setDefaultReceivingDays]);
   }
 }

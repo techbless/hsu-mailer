@@ -21,13 +21,7 @@ class SubscriptionService {
     await subscriber?.destroy();
   }
 
-  public async setDefaultReceivingDays(email: string) {
-    const subscriber = await Subscriber.findOne({
-      where: {
-        email,
-      },
-    });
-
+  public async setDefaultReceivingDays(subscriber: Subscriber) {
     ReceivingDays.create({
       subscriberId: subscriber!.subscriberId,
       sunday: true,
@@ -52,14 +46,9 @@ class SubscriptionService {
   }
 
 
-  public async verifySubscription(email: string) {
-    const subscriber = await Subscriber.findOne({
-      where: {
-        email,
-      },
-    });
-
-    subscriber!.isVerified = true;
+  public async verifySubscription(subscriber: Subscriber) {
+    // eslint-disable-next-line no-param-reassign
+    subscriber.isVerified = true;
     await subscriber!.save();
   }
 

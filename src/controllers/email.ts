@@ -9,6 +9,7 @@ import { TokenCommand, SubscribeCommand, UnSubscribeCommand } from '../services/
 
 import { Purpose } from '../models/token';
 import PasswordCommand from '../services/token_commands/password_command';
+import Subscriber from '../models/subscriber';
 
 class EmailController {
   @AsyncHandled
@@ -67,8 +68,10 @@ class EmailController {
       });
     }
 
+    const subscriber = await SubscriptionService.findSubscriberByEmail(email);
+
     if (purpose === 'subscribe') {
-      tokenCommand = new SubscribeCommand(email);
+      tokenCommand = new SubscribeCommand(subscriber!);
 
       res.render('result', {
         title: '구독 성공',
