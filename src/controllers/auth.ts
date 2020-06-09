@@ -29,7 +29,10 @@ class AuthController {
 
     const subscriber = await SubscriptionService.findSubscriberByEmail(email);
     if (!subscriber) {
-      // 오류 메세지 여기에
+      res.render('result', {
+        title: '구독중인 메일이 아닙니다.',
+        content: '구동중인 메일이 아닙니다. 다시 확인하여 주시기 바랍니다.',
+      });
       return;
     }
 
