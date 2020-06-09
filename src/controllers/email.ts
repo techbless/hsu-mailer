@@ -8,6 +8,7 @@ import SubscriptionService from '../services/subscription';
 import { TokenCommand, SubscribeCommand, UnSubscribeCommand } from '../services/token_commands';
 
 import { Purpose } from '../models/token';
+import PasswordCommand from '../services/token_commands/password_command';
 
 class EmailController {
   @AsyncHandled
@@ -54,6 +55,9 @@ class EmailController {
   public async verify(req: Request, res: Response) {
     const { email, token } = req.params;
     const { purpose } = req.query;
+
+    const { password } = req.body;
+
     let tokenCommand!: TokenCommand;
 
     if (!await TokenService.verifyToken(email, token, purpose as Purpose)) {
@@ -76,6 +80,13 @@ class EmailController {
       res.render('result', {
         title: '구독취소 성공',
         content: '비교과 공지 알림 구독을 취소했습니다. 더이상 알림을 받을 수 없습니다.',
+      });
+    } else if (purpose === 'password') {
+      tokenCommand = new PasswordCommand(email, password);
+
+      res.render('result', {
+        title: '비밀번호 설정 완료',
+        content: '비밀번호 설정이 완료 되었습니다.',
       });
     }
 

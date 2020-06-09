@@ -2,7 +2,7 @@ import { Model, DataTypes } from 'sequelize';
 import { sequelize } from './sequelize';
 import { dbType } from './index';
 
-export type Purpose = 'subscribe' | 'unsubscribe' | null;
+export type Purpose = 'subscribe' | 'unsubscribe' | 'password' | null;
 
 class Token extends Model {
     public readonly tokenId!: number;

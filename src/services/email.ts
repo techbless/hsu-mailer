@@ -77,12 +77,20 @@ class EmailService {
     let purposeForDB: Purpose = null;
     if (purpose === '구독') purposeForDB = 'subscribe';
     else if (purpose === '구독취소') purposeForDB = 'unsubscribe';
+    else if (purpose === '비밀번호 설정') purposeForDB = 'password';
 
     const token = await TokenService.issueToken(subscriber.subscriberId, purposeForDB);
 
     const bcc = [subscriber.email];
     const subject = `${purpose}(을)를 위해 이메일 인증을 완료해주세요.`;
-    const verificationUrl = `https://${process.env.SITE_URL}/verify/email/${subscriber.email}/${token}?purpose=${purposeForDB}`;
+
+    let verificationUrl;
+    if (purposeForDB === 'password') {
+      verificationUrl = `https://${process.env.SITE_URL}/new/password/${subscriber.email}/${token}`;
+    } else {
+      verificationUrl = `https://${process.env.SITE_URL}/verify/email/${subscriber.email}/${token}?purpose=${purposeForDB}`;
+    }
+
     const html = await ejs.renderFile(
       `${this.templateLocation}/verification.ejs`, {
         purpose,

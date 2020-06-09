@@ -1,5 +1,6 @@
 import { Router, Response, Request } from 'express';
 import AuthController from '../controllers/auth';
+import EmailController from '../controllers/email';
 
 class AuthRouter {
   public router!: Router;
@@ -9,9 +10,9 @@ class AuthRouter {
 
     this.router.post('/login', AuthController.login);
     this.router.get('/logout', AuthController.logout);
-    this.router.post('/set/password', (req: Request, res: Response) => {
-      res.send('Not Implemented');
-    });
+    this.router.get('/send/password_mail', AuthController.sendPasswordMail);
+    this.router.get('/new/password/:email/:token', AuthController.showNewPasswordPage);
+    this.router.post('/verify/email/:email/:token', EmailController.verify);
   }
 }
 
