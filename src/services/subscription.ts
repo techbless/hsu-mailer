@@ -29,11 +29,7 @@ class SubscriptionService {
   }
 
   public async changePassword(email: string, newPassword: string) {
-    const subscriber = await Subscriber.findOne({
-      where: {
-        email,
-      },
-    });
+    const subscriber = this.findSubscriberByEmail(email);
 
     subscriber!.password = newPassword;
     subscriber!.save();

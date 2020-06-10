@@ -3,6 +3,8 @@ import * as passportLocal from 'passport-local';
 import { Request, Response, NextFunction } from 'express';
 import Subscriber from '../models/subscriber';
 
+import SubscriptionService from '../services/subscription';
+
 passport.serializeUser(async (user: Subscriber, done) => {
   done(null, user.subscriberId);
 });
@@ -26,11 +28,7 @@ passport.use(
     passwordField: 'password',
   },
   async (email, password, done) => {
-    const user = await Subscriber.findOne({
-      where: {
-        email,
-      },
-    });
+    const user = await SubscriptionService.findSubscriberByEmail(email);
 
     if (!user) {
       return done(null, false, { message: 'Incorrect username' });
