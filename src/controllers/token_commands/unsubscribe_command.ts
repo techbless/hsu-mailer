@@ -1,6 +1,6 @@
 import TokenCommand from './token_command';
-import SubscriptionService from '../subscription';
-import ReceivingDayService from '../receiving_days';
+import SubscriptionService from '../../services/subscription';
+import ReceivingDayService from '../../services/receiving_days';
 import Subscriber from '../../models/subscriber';
 
 export class UnSubscribeCommand implements TokenCommand {

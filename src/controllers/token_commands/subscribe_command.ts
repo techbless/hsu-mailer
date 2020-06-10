@@ -1,6 +1,6 @@
 import TokenCommand from './token_command';
-import SubscriptionService from '../subscription';
-import EmailService from '../email';
+import SubscriptionService from '../../services/subscription';
+import EmailService from '../../services/email';
 import Subscriber from '../../models/subscriber';
 
 export class SubscribeCommand implements TokenCommand {

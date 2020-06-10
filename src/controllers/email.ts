@@ -5,11 +5,10 @@ import TokenService from '../services/token';
 import EmailService from '../services/email';
 import SubscriptionService from '../services/subscription';
 
-import { TokenCommand, SubscribeCommand, UnSubscribeCommand } from '../services/token_commands';
+import { TokenCommand, SubscribeCommand, UnSubscribeCommand } from './token_commands';
 
 import { Purpose } from '../models/token';
-import PasswordCommand from '../services/token_commands/password_command';
-import Subscriber from '../models/subscriber';
+import PasswordCommand from './token_commands/password_command';
 
 class EmailController {
   @AsyncHandled

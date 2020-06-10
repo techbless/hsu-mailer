@@ -1,5 +1,5 @@
 import TokenCommand from './token_command';
-import AuthService from '../auth';
+import AuthService from '../../services/auth';
 import Subscriber from '../../models/subscriber';
 
 export class PasswordCommand implements TokenCommand {
