@@ -1,8 +1,11 @@
-import { Model, DataTypes, HasManyGetAssociationsMixin } from 'sequelize';
+import {
+  Model, DataTypes, HasManyGetAssociationsMixin, HasOneGetAssociationMixin,
+} from 'sequelize';
 import { sequelize } from './sequelize';
 import { dbType } from './index';
 
 import Token from './token';
+import ReceivingDays from './receiving_days';
 
 class Subscriber extends Model {
   public readonly subscriberId!: number;
@@ -18,6 +21,8 @@ class Subscriber extends Model {
   public readonly updatedAt!: Date;
 
   public getTokens!: HasManyGetAssociationsMixin<Token>;
+
+  public getReceivingDay!: HasOneGetAssociationMixin<ReceivingDays>;
 }
 
 Subscriber.init({

@@ -4,6 +4,8 @@ import Subscriber from '../models/subscriber';
 import TokenService from '../services/token';
 import SubscriptionService from '../services/subscription';
 
+import TargetFilter from '../modules/targetFilter';
+
 import { Purpose } from '../models/token';
 
 class EmailService {
@@ -133,7 +135,8 @@ class EmailService {
     );
 
     const verifiedSubscribers = await SubscriptionService.getVerifiedSubscribers();
-    const emails = this.extractEmails(verifiedSubscribers);
+    const filteredSubscribers = await TargetFilter.filterByWeekDays(verifiedSubscribers);
+    const emails = this.extractEmails(filteredSubscribers);
     const bccs = this.distributeEmails(emails);
 
     for (let i = 0; i < bccs.length; i += 1) {
