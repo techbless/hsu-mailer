@@ -37,9 +37,9 @@ class SubscriptionService {
 
 
   public async verifySubscription(subscriber: Subscriber) {
-    // eslint-disable-next-line no-param-reassign
-    subscriber.isVerified = true;
-    await subscriber!.save();
+    subscriber.update({
+      isVerified: true,
+    });
   }
 
   public async getVerifiedSubscribers() {
