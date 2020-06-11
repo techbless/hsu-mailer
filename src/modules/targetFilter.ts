@@ -8,7 +8,6 @@ class TargetFilter {
 
     const now = new Date();
     const todayDayOfWeek = DAY_OF_WEEK[now.getDay()];
-    console.log(todayDayOfWeek);
 
     const filteredSubscribers: Subscriber[] = [];
 
