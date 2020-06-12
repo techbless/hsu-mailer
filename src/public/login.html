@@ -3,14 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <link rel="stylesheet" href="/css/formpage.css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <title>로그인</title>
 </head>
 <body>
-  <form action="/login" method="post">
-    <input type="text" name="email" id="email">
-    <input type="password" name="password" id="password">
-    <input type="submit" value="로그인">
-  </form>
-  <a href="/change_password.html">비밀번호 설정을 한적이 없거나, 잊어버리셨나요?</a>
+  <div class="wrapper fadeInDown zero-raduis">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+
+      <!-- Icon -->
+      <div class="fadeIn first">
+        <!-- <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" /> -->
+        <h1 class="my-5">로그인</h1>
+      </div>
+
+      <!-- Login Form -->
+      <form action="/login" method="post">
+        <input type="email" id="email" class="fadeIn second zero-raduis" name="email" placeholder="email">
+        <input type="password" id="password" class="fadeIn third zero-raduis" name="password" placeholder="password">
+        <input type="submit" class="fadeIn fourth zero-raduis" value="login">
+        <h2>비밀번호를 설정 한적 없거나, 잊어버리셨나요?</h2>
+        <a href="/change_password.html">
+          <input type="button" class="fadeIn fourth zero-raduis pc" value="비밀번호 설정">
+        </a>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
+
