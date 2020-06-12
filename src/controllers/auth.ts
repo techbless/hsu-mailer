@@ -38,7 +38,11 @@ class AuthController {
 
     await EmailService.sendVerificationEmail(subscriber, '비밀번호 설정');
 
-    res.send(`${email}로 비밀번호 설정 링크가 발송되었습니다.`);
+    // res.send(`${email}로 비밀번호 설정 링크가 발송되었습니다.`);
+    res.render('result', {
+      title: '비밀번호 설정을 계속하려면 메일을 확인해주세요.',
+      content: `${email}로 비밀번호 설정 링크가 발송되었습니다.`,
+    });
   }
 
   public async showNewPasswordPage(req: Request, res: Response) {
