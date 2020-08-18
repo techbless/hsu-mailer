@@ -27,7 +27,7 @@ class AuthController {
   public async sendPasswordMail(req: Request, res: Response) {
     const { email } = req.query;
 
-    const subscriber = await SubscriptionService.findSubscriberByEmail(email);
+    const subscriber = await SubscriptionService.findSubscriberByEmail(email as string);
     if (!subscriber) {
       res.render('result', {
         title: '구독중인 메일이 아닙니다.',
