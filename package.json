@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "prebuild": "npx copyfiles -u 1 src/views/**/* src/public/**/* src/templates/**/* dist/",
+    "prebuild": "npx copyfiles -u 1 \"src/views/**/*\" \"src/public/**/*\" \"src/templates/**/*\" dist/",
     "start": "node dist/server.js",
     "start:dev": "nodemon --exec ts-node --files src/server.ts",
     "test": "mocha -r ts-node/register ./src/test/**/*.spec.ts",
