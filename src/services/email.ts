@@ -104,12 +104,11 @@ class EmailService {
     this.sendEmail(params);
   }
 
-
   private extractEmails(subscribers: Subscriber[]) {
     return subscribers.map((subscriber) => subscriber.email);
   }
 
-  private distributeEmails(emails: string[], nEach: number = 30) {
+  private distributeEmails(emails: string[], nEach: number = 10) {
     const nEmails = emails.length;
     const nDistributed = Math.floor(nEmails / nEach);
 
