@@ -139,9 +139,10 @@ class EmailService {
     const bccs = this.distributeEmails(emails);
 
     for (let i = 0; i < bccs.length; i += 1) {
-      const params = this.generateParams(bccs[i], subject, html, text);
-
-      this.sendEmail(params);
+      setTimeout(async () => {
+        const params = this.generateParams(bccs[i], subject, html, text);
+        this.sendEmail(params);
+      }, 1500 * i);
     }
   }
 }
