@@ -43,6 +43,9 @@ class UpdateChecker {
   }
 
   private async getNotifications() {
+    // reload a page before checking new notifications.
+    await this.page.reload({ waitUntil: ['networkidle0', 'domcontentloaded'] });
+
     const result = await this.page.evaluate(() => {
       const notifications: Notification[] = [];
       const trs = $('tr');
