@@ -75,7 +75,8 @@ class UpdateChecker {
     const beforeLatestIdx = await NotficationHistoryService.getLatestIdx();
     const notificationPosts = await this.getNotifications();
 
-    // console.log(notificationPosts);
+    console.log(`Latest Index: ${beforeLatestIdx}`);
+
     notificationPosts.forEach((elm) => {
       const { idx, title, link } = elm;
 
