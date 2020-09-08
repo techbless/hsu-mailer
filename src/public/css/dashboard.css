@@ -197,3 +197,14 @@ table.dayofweek > * > tr > * > input[type="checkbox"] {
         display: none;
     }
 }
+
+
+.broadcast_msg {
+    width: 100%;
+    height: 120px;
+}
+
+.broadcast_email_subject {
+    width: 100%;
+    margin-bottom: 10px;
+}

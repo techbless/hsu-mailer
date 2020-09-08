@@ -61,6 +61,17 @@ class EmailService {
     });
   }
 
+  public async sendCustomEmailToAll(subject: string, content: string) {
+    const text = content;
+    const html = await ejs.renderFile(
+      `${this.templateLocation}/announce.ejs`, {
+        content,
+      },
+    );
+
+    await this.sendMailToAll(subject, text, html, false);
+  }
+
   public async sendWelcomeEmail(email: string) {
     const bcc = [email];
     const subject: string = '비교과 메일링 구독을 마쳤습니다.';
@@ -133,9 +144,18 @@ class EmailService {
       },
     );
 
+    this.sendMailToAll(subject, text, html, true);
+  }
+
+  public async sendMailToAll(subject: string, text: string, html: string, doesFilterWeek: boolean) {
     const verifiedSubscribers = await SubscriptionService.getVerifiedSubscribers();
-    const filteredSubscribers = await TargetFilter.filterByWeekDays(verifiedSubscribers);
-    const emails = this.extractEmails(filteredSubscribers);
+
+    let mailReceiver = verifiedSubscribers;
+    if (doesFilterWeek) {
+      mailReceiver = await TargetFilter.filterByWeekDays(verifiedSubscribers);
+    }
+
+    const emails = this.extractEmails(mailReceiver);
     const bccs = this.distributeEmails(emails);
 
     for (let i = 0; i < bccs.length; i += 1) {

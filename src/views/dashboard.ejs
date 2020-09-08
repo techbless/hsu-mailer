@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="Content-Security-Policy" script-src='unsafe-inline';>
 
         <title>비교과 공지 맞춤설정</title>
 
@@ -139,6 +140,26 @@
                   </form>
                 </div>
               </div>
+
+              <% if (permissions && permissions.broadcast) { %>
+                <div class="section">
+                  <div class="container-fluid">
+                    <h5>전체 메세지 [관리자]</h5><hr><br>
+  
+                    <form method="post" action="/broadcast">
+                      <p>제목</p>
+                      <input type="text" name="subject" id="subject" class="broadcast_email_subject">
+                      <p>내용</p>
+                      <textarea name="message" id="message" class="broadcast_msg"></textarea>
+                      <br><br>
+  
+                      <div class="text-right">
+                        <input type="submit" value="전송" class="btn btn-info">
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              <% } %>
 
               <div class="section">
                 <h5>키워드 필터링</h5><hr><br>
