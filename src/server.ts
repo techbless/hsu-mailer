@@ -18,7 +18,7 @@ async function startAll() {
   try {
     await sequelize.sync({ force: false });
 
-    const PERIOD_IN_MIN = 10;
+    const PERIOD_IN_MIN = 5;
     updateChecker.setUrl('http://www.hansung.ac.kr/web/www/1323');
     await updateChecker.initialize();
     setScheduler(updateChecker.checkAndSendEmail, PERIOD_IN_MIN);
