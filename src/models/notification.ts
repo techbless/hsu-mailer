@@ -7,6 +7,8 @@ class Notification extends Model {
 
   public webpostIdx!: number;
 
+  public notificationType!: string;
+
   public title!: string;
 
   public link!: string;
@@ -25,6 +27,9 @@ Notification.init({
   webpostIdx: {
     type: DataTypes.INTEGER,
     allowNull: false,
+  },
+  notificationType: {
+    type: DataTypes.STRING(20),
   },
   title: {
     type: DataTypes.STRING(150),
