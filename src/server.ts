@@ -20,6 +20,11 @@ async function startAll() {
     await sequelize.sync({ force: false });
 
     const PERIOD_IN_MIN = 5;
+    const PORT: number = +process.env.PORT! || 3000;
+    app.listen(PORT, (err) => {
+      if (err) throw err;
+      console.log('Server Started: Listen on port ', PORT);
+    });
 
     const hansungNotificationChecker = new UpdateChecker(NotificationType.hansung);
     const academicNotificationChecker = new UpdateChecker(NotificationType.academic);
@@ -37,12 +42,6 @@ async function startAll() {
     setScheduler(scholarshipNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
 
     console.log('Scheduler Set: Check new post every ', PERIOD_IN_MIN, 'min');
-
-    const PORT: number = +process.env.PORT! || 3000;
-    app.listen(PORT, (err) => {
-      if (err) throw err;
-      console.log('Server Started: Listen on port ', PORT);
-    });
   } catch (error) {
     console.log('Error! Failed to start the server.');
     console.log(error);
