@@ -13,8 +13,8 @@ class TargetFilter {
 
     // eslint-disable-next-line no-restricted-syntax
     for await (const subscriber of subscribers) {
-      const receivingDay = await subscriber.getReceivingDay();
-      if (receivingDay[todayDayOfWeek]) {
+      const receivingOption = await subscriber.getReceivingOption();
+      if (receivingOption[todayDayOfWeek]) {
         filteredSubscribers.push(subscriber);
       }
     }

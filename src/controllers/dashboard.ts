@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import AsyncHandled from 'express-safe-async';
 
-import ReceivingDayService from '../services/receiving_days';
+import ReceivingOptionService from '../services/receiving_option';
 import PermissionService from '../services/permission';
 import EmailService from '../services/email';
 
 class DashBoardController {
   @AsyncHandled
   public async getDashBoard(req: Request, res: Response) {
-    const receivingDays = await ReceivingDayService.getReceivingDays(req.user!.subscriberId);
+    const receivingDays = await ReceivingOptionService.getReceivingOption(req.user!.subscriberId);
     const permissions = await PermissionService.getPermissions(req.user!.subscriberId);
 
     res.render('dashboard', {
@@ -33,7 +33,7 @@ class DashBoardController {
       return false;
     });
 
-    await ReceivingDayService.updateReceivingDays(
+    await ReceivingOptionService.updateReceivingDays(
       req.user!.subscriberId, {
         sunday: daysInBool[0],
         monday: daysInBool[1],

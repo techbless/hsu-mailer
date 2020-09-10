@@ -2,7 +2,7 @@ import { Model, DataTypes, HasManyGetAssociationsMixin } from 'sequelize';
 import { sequelize } from './sequelize';
 import { dbType } from './index';
 
-class ReceivingDays extends Model {
+class ReceivingOption extends Model {
   public subscriberId!: number;
 
   public sunday!: boolean;
@@ -19,12 +19,20 @@ class ReceivingDays extends Model {
 
   public saturday!: boolean;
 
+  public hansung!: boolean;
+
+  public academic!: boolean;
+
+  public hspoint!: boolean;
+
+  public scholarship!: boolean;
+
   public readonly createdAt!: Date;
 
   public readonly updatedAt!: Date;
 }
 
-ReceivingDays.init({
+ReceivingOption.init({
   sunday: {
     type: DataTypes.BOOLEAN,
   },
@@ -46,16 +54,28 @@ ReceivingDays.init({
   saturday: {
     type: DataTypes.BOOLEAN,
   },
+  hansung: {
+    type: DataTypes.BOOLEAN,
+  },
+  academic: {
+    type: DataTypes.BOOLEAN,
+  },
+  hspoint: {
+    type: DataTypes.BOOLEAN,
+  },
+  scholarship: {
+    type: DataTypes.BOOLEAN,
+  },
 }, {
   sequelize,
-  modelName: 'ReceivingDays',
-  tableName: 'receivingDays',
+  modelName: 'ReceivingOption',
+  tableName: 'receivingOption',
   charset: 'utf8mb4',
   collate: 'utf8mb4_unicode_ci',
 });
 
 export const associate = (db: dbType) => {
-  ReceivingDays.belongsTo(db.Subscriber, { foreignKey: 'subscriberId' });
+  ReceivingOption.belongsTo(db.Subscriber, { foreignKey: 'subscriberId' });
 };
 
-export default ReceivingDays;
+export default ReceivingOption;

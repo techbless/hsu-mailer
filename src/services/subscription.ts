@@ -1,7 +1,7 @@
 import * as AWS from 'aws-sdk';
 import * as ejs from 'ejs';
 import Subscriber from '../models/subscriber';
-import ReceivingDays from '../models/receiving_days';
+import ReceivingDays from '../models/receiving_option';
 
 class SubscriptionService {
   public subscribe(email: string) {
@@ -25,6 +25,9 @@ class SubscriptionService {
       thursday: true,
       friday: true,
       saturday: true,
+      academic: false,
+      hspoint: true,
+      scholarship: false,
     });
   }
 
@@ -34,7 +37,6 @@ class SubscriptionService {
     subscriber!.password = newPassword;
     subscriber!.save();
   }
-
 
   public async verifySubscription(subscriber: Subscriber) {
     subscriber.update({
