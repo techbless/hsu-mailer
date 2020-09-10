@@ -4,7 +4,8 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 import * as cron from 'node-cron';
-import UpdateChecker, { NotificationType } from './modules/updateChecker';
+import UpdateChecker from './modules/updateChecker';
+import { NotificationType } from './models/receiving_option';
 import { sequelize } from './models/index';
 import app from './app';
 
@@ -18,8 +19,7 @@ async function startAll() {
   try {
     await sequelize.sync({ force: false });
 
-    const PERIOD_IN_MIN = 10;
-    // updateChecker.setUrl('http://www.hansung.ac.kr/web/www/1323');
+    const PERIOD_IN_MIN = 5;
 
     const hansungNotificationChecker = new UpdateChecker(NotificationType.hansung);
     const academicNotificationChecker = new UpdateChecker(NotificationType.academic);

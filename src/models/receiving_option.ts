@@ -2,6 +2,13 @@ import { Model, DataTypes, HasManyGetAssociationsMixin } from 'sequelize';
 import { sequelize } from './sequelize';
 import { dbType } from './index';
 
+export enum NotificationType {
+  hansung = 'hansung',
+  academic = 'academic',
+  hspoint = 'hspoint',
+  scholarship = 'scholarship'
+}
+
 class ReceivingOption extends Model {
   public subscriberId!: number;
 

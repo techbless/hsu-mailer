@@ -2,13 +2,7 @@ import * as puppeteer from 'puppeteer';
 import * as cron from 'node-cron';
 import NotficationHistoryService from '../services/notification';
 import EmailService from '../services/email';
-
-export enum NotificationType {
-  hansung = 'hansung',
-  academic = 'academic',
-  hspoint = 'hspoint',
-  scholarship = 'scholarship'
-}
+import { NotificationType } from '../models/receiving_option';
 
 interface Notification {
   idx: number;
@@ -114,7 +108,7 @@ class UpdateChecker {
         console.log('New Post Detected!');
         const titleForMail = `[${this.showingType}] ${title}`;
         console.log(idx, titleForMail);
-        EmailService.sendNotificationEmail(titleForMail, link);
+        EmailService.sendNotificationEmail(titleForMail, link, this.type);
         NotficationHistoryService.addHistory(idx, title, link, this.type);
       }
     });
