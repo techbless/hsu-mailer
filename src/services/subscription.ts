@@ -25,6 +25,7 @@ class SubscriptionService {
       thursday: true,
       friday: true,
       saturday: true,
+      hansung: false,
       academic: false,
       hspoint: true,
       scholarship: false,
