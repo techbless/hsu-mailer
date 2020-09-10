@@ -49,6 +49,7 @@ class UpdateChecker {
       });
 
       this.page = await browser.newPage();
+      await this.page.setDefaultNavigationTimeout(0);
       await this.page.setViewport({ width: 320, height: 600 });
       await this.page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 9_0_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A404 Safari/601.1');
       await this.page.goto(this.url, { waitUntil: 'networkidle0' });
