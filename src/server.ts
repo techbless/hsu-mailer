@@ -36,10 +36,17 @@ async function startAll() {
     await hspointNotificationChecker.initialize();
     await scholarshipNotificationChecker.initialize();
 
-    setScheduler(hansungNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
-    setScheduler(academicNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
-    setScheduler(hspointNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
-    setScheduler(scholarshipNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
+    setScheduler(async () => {
+      await hansungNotificationChecker.checkAndSendEmail();
+      await academicNotificationChecker.checkAndSendEmail();
+      await hspointNotificationChecker.checkAndSendEmail();
+      await scholarshipNotificationChecker.checkAndSendEmail();
+    }, PERIOD_IN_MIN);
+
+    // setScheduler(hansungNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
+    // setScheduler(academicNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
+    // setScheduler(hspointNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
+    // setScheduler(scholarshipNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
 
     console.log('Scheduler Set: Check new post every ', PERIOD_IN_MIN, 'min');
   } catch (error) {
