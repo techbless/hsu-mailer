@@ -48,7 +48,7 @@ class EmailService {
           Charset: 'utf-8', // 인코딩 타입
         },
       },
-      Source: '=?utf-8?B?67mE6rWQ6rO8IOqzteyngCDwn5SU?= <hspoint@techbless.live>', // 보낸 사람 주소
+      Source: '=?UTF-8?B?7ZWc7ISx64yAIOqzteyngCDwn5SU?= <hspoint@techbless.live>', // 보낸 사람 주소
       ReplyToAddresses: ['hspoint@techbless.live'], // 답장 받을 이메일 주소
     };
 
