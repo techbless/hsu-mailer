@@ -2,6 +2,7 @@ import * as puppeteer from 'puppeteer';
 import * as cron from 'node-cron';
 import NotficationHistoryService from '../services/notification';
 import EmailService from '../services/email';
+import { NotificationType } from '../models/receiving_option';
 
 interface Notification {
   idx: number;
@@ -10,16 +11,32 @@ interface Notification {
 }
 
 class UpdateChecker {
+  private type!: NotificationType;
+
+  private showingType!: string;
+
   private url!: string;
 
   private page!: puppeteer.Page;
 
-  constructor() {
-    this.checkAndSendEmail = this.checkAndSendEmail.bind(this);
-  }
+  constructor(notificationType: NotificationType) {
+    this.type = notificationType;
 
-  public setUrl(url: string) {
-    this.url = url;
+    if (notificationType === NotificationType.hansung) {
+      this.url = 'https://www.hansung.ac.kr/web/www/cmty_01_01';
+      this.showingType = '한성공지';
+    } else if (notificationType === NotificationType.academic) {
+      this.url = 'https://www.hansung.ac.kr/web/www/cmty_01_03';
+      this.showingType = '학사공지';
+    } else if (notificationType === NotificationType.hspoint) {
+      this.url = 'https://www.hansung.ac.kr/web/www/1323';
+      this.showingType = '비교과공지';
+    } else if (notificationType === NotificationType.scholarship) {
+      this.url = 'https://www.hansung.ac.kr/web/www/552';
+      this.showingType = '장학공지';
+    }
+
+    this.checkAndSendEmail = this.checkAndSendEmail.bind(this);
   }
 
   public async initialize() {
@@ -75,7 +92,7 @@ class UpdateChecker {
   public async checkAndSendEmail() {
     console.log('Start Checking');
 
-    const beforeLatestIdx = await NotficationHistoryService.getLatestIdx();
+    const beforeLatestIdx = await NotficationHistoryService.getLatestIdx(this.type);
     const notificationPosts = await this.getNotifications();
 
     console.log(`Latest Index: ${beforeLatestIdx}`);
@@ -89,9 +106,10 @@ class UpdateChecker {
 
       if (idx > beforeLatestIdx) {
         console.log('New Post Detected!');
-        console.log(idx, title);
-        EmailService.sendNotificationEmail(title, link);
-        NotficationHistoryService.addHistory(idx, title, link);
+        const titleForMail = `[${this.showingType}] ${title}`;
+        console.log(idx, titleForMail);
+        EmailService.sendNotificationEmail(titleForMail, link, this.type);
+        NotficationHistoryService.addHistory(idx, title, link, this.type);
       }
     });
 
@@ -99,4 +117,4 @@ class UpdateChecker {
   }
 }
 
-export default new UpdateChecker();
+export default UpdateChecker;

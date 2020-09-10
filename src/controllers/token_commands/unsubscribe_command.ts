@@ -1,6 +1,6 @@
 import TokenCommand from './token_command';
 import SubscriptionService from '../../services/subscription';
-import ReceivingDayService from '../../services/receiving_days';
+import ReceivingOptionService from '../../services/receiving_option';
 import Subscriber from '../../models/subscriber';
 
 export class UnSubscribeCommand implements TokenCommand {
@@ -11,7 +11,7 @@ export class UnSubscribeCommand implements TokenCommand {
   }
 
   public async execute() {
-    await ReceivingDayService.removeReceivingDays(this.subscriber.subscriberId);
+    await ReceivingOptionService.removeReceivingOption(this.subscriber.subscriberId);
     await SubscriptionService.unsubscribe(this.subscriber);
   }
 }

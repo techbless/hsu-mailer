@@ -1,19 +1,19 @@
 import Subscriber from '../models/subscriber';
-import ReceivingDays from '../models/receiving_days';
+import ReceivingOption from '../models/receiving_option';
 
 class ReceivingDayService {
-  public getReceivingDays(subscriberId: number) {
-    return ReceivingDays.findOne({
+  public getReceivingOption(subscriberId: number) {
+    return ReceivingOption.findOne({
       where: {
         subscriberId,
       },
     });
   }
 
-  public async removeReceivingDays(subscriberId: number) {
-    const receivingDays = await this.getReceivingDays(subscriberId);
+  public async removeReceivingOption(subscriberId: number) {
+    const receivingOption = await this.getReceivingOption(subscriberId);
 
-    receivingDays!.destroy();
+    receivingOption!.destroy();
   }
 
   public async updateReceivingDays(subscriberId: number, {
@@ -27,13 +27,13 @@ class ReceivingDayService {
     friday: boolean,
     saturday: boolean
   }) {
-    const receivingDays = await ReceivingDays.findOne({
+    const receivingOption = await ReceivingOption.findOne({
       where: {
         subscriberId,
       },
     });
 
-    return receivingDays?.update({
+    return receivingOption?.update({
       sunday,
       monday,
       tuesday,
