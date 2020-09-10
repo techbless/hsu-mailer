@@ -4,7 +4,8 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 import * as cron from 'node-cron';
-import updateChecker from './modules/updateChecker';
+import UpdateChecker from './modules/updateChecker';
+import { NotificationType } from './models/receiving_option';
 import { sequelize } from './models/index';
 import app from './app';
 
@@ -19,9 +20,22 @@ async function startAll() {
     await sequelize.sync({ force: false });
 
     const PERIOD_IN_MIN = 5;
-    updateChecker.setUrl('http://www.hansung.ac.kr/web/www/1323');
-    await updateChecker.initialize();
-    setScheduler(updateChecker.checkAndSendEmail, PERIOD_IN_MIN);
+
+    const hansungNotificationChecker = new UpdateChecker(NotificationType.hansung);
+    const academicNotificationChecker = new UpdateChecker(NotificationType.academic);
+    const hspointNotificationChecker = new UpdateChecker(NotificationType.hspoint);
+    const scholarshipNotificationChecker = new UpdateChecker(NotificationType.scholarship);
+
+    await hansungNotificationChecker.initialize();
+    await academicNotificationChecker.initialize();
+    await hspointNotificationChecker.initialize();
+    await scholarshipNotificationChecker.initialize();
+
+    setScheduler(hansungNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
+    setScheduler(academicNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
+    setScheduler(hspointNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
+    setScheduler(scholarshipNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
+
     console.log('Scheduler Set: Check new post every ', PERIOD_IN_MIN, 'min');
 
     const PORT: number = +process.env.PORT! || 3000;
@@ -34,6 +48,5 @@ async function startAll() {
     console.log(error);
   }
 }
-
 
 startAll();

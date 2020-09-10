@@ -7,6 +7,7 @@ import SubscriptionService from '../services/subscription';
 import TargetFilter from '../modules/targetFilter';
 
 import { Purpose } from '../models/token';
+import { NotificationType } from '../models/receiving_option';
 
 class EmailService {
   private ses: AWS.SES;
@@ -135,7 +136,11 @@ class EmailService {
     return distributedEmails;
   }
 
-  public async sendNotificationEmail(title: string, link: string) {
+  public async sendNotificationEmail(
+    title: string,
+    link: string,
+    notificationType: NotificationType,
+  ) {
     const subject = title;
     const text = link;
     const html = await ejs.renderFile(
@@ -144,15 +149,21 @@ class EmailService {
       },
     );
 
-    this.sendMailToAll(subject, text, html, true);
+    this.sendMailToAll(subject, text, html, true, notificationType);
   }
 
-  public async sendMailToAll(subject: string, text: string, html: string, doesFilterWeek: boolean) {
+  public async sendMailToAll(
+    subject: string,
+    text: string,
+    html: string,
+    doFilter: boolean,
+    notificationType?: NotificationType,
+  ) {
     const verifiedSubscribers = await SubscriptionService.getVerifiedSubscribers();
 
     let mailReceiver = verifiedSubscribers;
-    if (doesFilterWeek) {
-      mailReceiver = await TargetFilter.filterByWeekDays(verifiedSubscribers);
+    if (doFilter) {
+      mailReceiver = await TargetFilter.filter(verifiedSubscribers, notificationType!);
     }
 
     const emails = this.extractEmails(mailReceiver);

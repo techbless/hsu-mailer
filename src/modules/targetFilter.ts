@@ -1,9 +1,10 @@
 import Subscriber from '../models/subscriber';
+import { NotificationType } from '../models/receiving_option';
 
 type DAYS = 'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday';
 
 class TargetFilter {
-  public async filterByWeekDays(subscribers: Subscriber[]) {
+  public async filter(subscribers: Subscriber[], notificationType: NotificationType) {
     const DAY_OF_WEEK: DAYS[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 
     const now = new Date();
@@ -13,8 +14,8 @@ class TargetFilter {
 
     // eslint-disable-next-line no-restricted-syntax
     for await (const subscriber of subscribers) {
-      const receivingDay = await subscriber.getReceivingDay();
-      if (receivingDay[todayDayOfWeek]) {
+      const receivingOption = await subscriber.getReceivingOption();
+      if (receivingOption[todayDayOfWeek] && receivingOption[notificationType]) {
         filteredSubscribers.push(subscriber);
       }
     }

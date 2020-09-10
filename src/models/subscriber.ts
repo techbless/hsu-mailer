@@ -5,7 +5,7 @@ import { sequelize } from './sequelize';
 import { dbType } from './index';
 
 import Token from './token';
-import ReceivingDays from './receiving_days';
+import ReceivingOption from './receiving_option';
 
 class Subscriber extends Model {
   public readonly subscriberId!: number;
@@ -22,7 +22,7 @@ class Subscriber extends Model {
 
   public getTokens!: HasManyGetAssociationsMixin<Token>;
 
-  public getReceivingDay!: HasOneGetAssociationMixin<ReceivingDays>;
+  public getReceivingOption!: HasOneGetAssociationMixin<ReceivingOption>;
 }
 
 Subscriber.init({
@@ -55,7 +55,7 @@ Subscriber.init({
 
 export const associate = (db: dbType) => {
   Subscriber.hasMany(db.Token, { foreignKey: 'subscriberId' });
-  Subscriber.hasOne(db.ReceivingDays, { foreignKey: 'subscriberId' });
+  Subscriber.hasOne(db.ReceivingOption, { foreignKey: 'subscriberId' });
   Subscriber.hasOne(db.Permission, { foreignKey: 'subscriberId' });
 };
 
