@@ -152,7 +152,7 @@ class EmailService {
 
     let mailReceiver = verifiedSubscribers;
     if (doesFilterWeek) {
-      mailReceiver = await TargetFilter.filterByWeekDays(verifiedSubscribers);
+      mailReceiver = await TargetFilter.filter(verifiedSubscribers);
     }
 
     const emails = this.extractEmails(mailReceiver);

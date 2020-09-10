@@ -3,7 +3,7 @@ import Subscriber from '../models/subscriber';
 type DAYS = 'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday';
 
 class TargetFilter {
-  public async filterByWeekDays(subscribers: Subscriber[]) {
+  public async filter(subscribers: Subscriber[]) {
     const DAY_OF_WEEK: DAYS[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 
     const now = new Date();
