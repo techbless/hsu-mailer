@@ -43,11 +43,6 @@ async function startAll() {
       await scholarshipNotificationChecker.checkAndSendEmail();
     }, PERIOD_IN_MIN);
 
-    // setScheduler(hansungNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
-    // setScheduler(academicNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
-    // setScheduler(hspointNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
-    // setScheduler(scholarshipNotificationChecker.checkAndSendEmail, PERIOD_IN_MIN);
-
     console.log('Scheduler Set: Check new post every ', PERIOD_IN_MIN, 'min');
   } catch (error) {
     console.log('Error! Failed to start the server.');
