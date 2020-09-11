@@ -8,11 +8,11 @@ import EmailService from '../services/email';
 class DashBoardController {
   @AsyncHandled
   public async getDashBoard(req: Request, res: Response) {
-    const receivingDays = await ReceivingOptionService.getReceivingOption(req.user!.subscriberId);
+    const receivingOption = await ReceivingOptionService.getReceivingOption(req.user!.subscriberId);
     const permissions = await PermissionService.getPermissions(req.user!.subscriberId);
 
     res.render('dashboard', {
-      receivingDays,
+      receivingOption,
       permissions,
     });
   }
@@ -42,6 +42,34 @@ class DashBoardController {
         thursday: daysInBool[4],
         friday: daysInBool[5],
         saturday: daysInBool[6],
+      },
+    );
+
+    res.redirect('/dashboard');
+  }
+
+  @AsyncHandled
+  public async updateReceivingType(req: Request, res: Response) {
+    const {
+      hansung, academic, hspoint, scholarship,
+    } = req.body;
+
+    const typeInString = [hansung, academic, hspoint, scholarship];
+
+    // "on" should be true
+    const typeInBool: boolean[] = typeInString.map((day: string) => {
+      if (day === 'on') {
+        return true;
+      }
+      return false;
+    });
+
+    await ReceivingOptionService.updateReceivingType(
+      req.user!.subscriberId, {
+        hansung: typeInBool[0],
+        academic: typeInBool[1],
+        hspoint: typeInBool[2],
+        scholarship: typeInBool[3],
       },
     );
 

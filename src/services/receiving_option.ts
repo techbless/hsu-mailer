@@ -43,6 +43,25 @@ class ReceivingDayService {
       saturday,
     });
   }
+
+  public async updateReceivingType(subscriberId: number, {
+    hansung, academic, hspoint, scholarship,
+  }: {
+    hansung: boolean,
+    academic: boolean,
+    hspoint: boolean,
+    scholarship: boolean,
+  }) {
+    const receivingOption = await ReceivingOption.findOne({
+      where: {
+        subscriberId,
+      },
+    });
+
+    return receivingOption?.update({
+      hansung, academic, hspoint, scholarship,
+    });
+  }
 }
 
 export default new ReceivingDayService();

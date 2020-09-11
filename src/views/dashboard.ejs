@@ -82,49 +82,105 @@
                           <td>
                             <input 
                               type="checkbox" name="sun" id="sun" value="on"
-                              <% let checked = receivingDays.sunday ? 'checked' : '' %>
+                              <% let checked = receivingOption.sunday ? 'checked' : '' %>
                               <%= checked %>
                             >
                           </td>
                           <td>
                             <input 
                               type="checkbox" name="mon" id="mon" value="on"
-                              <% checked = receivingDays.monday ? 'checked' : '' %>
+                              <% checked = receivingOption.monday ? 'checked' : '' %>
                               <%= checked %>
                             >
                           </td>
                           <td>
                             <input 
                               type="checkbox" name="tue" id="tue" value="on"
-                              <% checked = receivingDays.tuesday ? 'checked' : '' %>
+                              <% checked = receivingOption.tuesday ? 'checked' : '' %>
                               <%= checked %>
                             >
                           </td>
                           <td>
                             <input
                               type="checkbox" name="wed" id="wed" value="on"
-                              <% checked = receivingDays.wednesday ? 'checked' : '' %>
+                              <% checked = receivingOption.wednesday ? 'checked' : '' %>
                               <%= checked %>
                             >
                           </td>
                           <td>
                             <input
                               type="checkbox" name="thu" id="thu" value="on"
-                              <% checked = receivingDays.thursday ? 'checked' : '' %>
+                              <% checked = receivingOption.thursday ? 'checked' : '' %>
                               <%= checked %>
                             >
                           </td>
                           <td>
                             <input
                               type="checkbox" name="fri" id="fri" value="on"
-                              <% checked = receivingDays.friday ? 'checked' : '' %>
+                              <% checked = receivingOption.friday ? 'checked' : '' %>
                               <%= checked %>
                             >
                           </td>
                           <td>
                             <input
                               type="checkbox" name="sat" id="sat" value="on"
-                              <% checked = receivingDays.saturday ? 'checked' : '' %>
+                              <% checked = receivingOption.saturday ? 'checked' : '' %>
+                              <%= checked %>
+                            >
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <br><br>
+
+                    <div class="text-right">
+                      <input type="submit" value="저장" class="btn btn-info">
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="section">
+                <div class="container-fluid">
+                  <h5>공지 종류별 수신 설정</h5><hr><br>
+                  <form method="post" action="/update/receiving_type">
+                    <table width="60%" class="dayofweek mx-auto">
+                      <thead>
+                        <tr>
+                          <th>한성공지</th>
+                          <th>학사공지</th>
+                          <th>비교과공지</th>
+                          <th>장학공지</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <input 
+                              type="checkbox" name="hansung" id="hansung" value="on"
+                              <% checked = receivingOption.hansung ? 'checked' : '' %>
+                              <%= checked %>
+                            >
+                          </td>
+                          <td>
+                            <input 
+                              type="checkbox" name="academic" id="academic" value="on"
+                              <% checked = receivingOption.academic ? 'checked' : '' %>
+                              <%= checked %>
+                            >
+                          </td>
+                          <td>
+                            <input 
+                              type="checkbox" name="hspoint" id="hspoint" value="on"
+                              <% checked = receivingOption.hspoint ? 'checked' : '' %>
+                              <%= checked %>
+                            >
+                          </td>
+                          <td>
+                            <input
+                              type="checkbox" name="scholarship" id="scholarship" value="on"
+                              <% checked = receivingOption.scholarship ? 'checked' : '' %>
                               <%= checked %>
                             >
                           </td>
@@ -168,10 +224,6 @@
               </div>
             </div>
         </div>
-
-
-
-
 
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
