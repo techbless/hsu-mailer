@@ -17,10 +17,13 @@ class UpdateChecker {
 
   private url!: string;
 
+  private browser!: puppeteer.Browser;
+
   private page!: puppeteer.Page;
 
-  constructor(notificationType: NotificationType) {
+  constructor(notificationType: NotificationType, browser: puppeteer.Browser) {
     this.type = notificationType;
+    this.browser = browser;
 
     if (notificationType === NotificationType.hansung) {
       this.url = 'https://www.hansung.ac.kr/web/www/cmty_01_01';
@@ -41,14 +44,14 @@ class UpdateChecker {
 
   public async initialize() {
     try {
-      const browser = await puppeteer.launch({
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-        ],
-      });
+      // const browser = await puppeteer.launch({
+      //   args: [
+      //     '--no-sandbox',
+      //     '--disable-setuid-sandbox',
+      //   ],
+      // });
 
-      this.page = await browser.newPage();
+      this.page = await this.browser.newPage();
       await this.page.setDefaultNavigationTimeout(120000);
       await this.page.setViewport({ width: 320, height: 600 });
       await this.page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 9_0_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A404 Safari/601.1');

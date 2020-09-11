@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
+import * as puppeteer from 'puppeteer';
 import * as cron from 'node-cron';
 import UpdateChecker from './modules/updateChecker';
 import { NotificationType } from './models/receiving_option';
@@ -26,10 +27,17 @@ async function startAll() {
       console.log('Server Started: Listen on port ', PORT);
     });
 
-    const hansungNotificationChecker = new UpdateChecker(NotificationType.hansung);
-    const academicNotificationChecker = new UpdateChecker(NotificationType.academic);
-    const hspointNotificationChecker = new UpdateChecker(NotificationType.hspoint);
-    const scholarshipNotificationChecker = new UpdateChecker(NotificationType.scholarship);
+    const browser = await puppeteer.launch({
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+      ],
+    });
+
+    const hansungNotificationChecker = new UpdateChecker(NotificationType.hansung, browser);
+    const academicNotificationChecker = new UpdateChecker(NotificationType.academic, browser);
+    const hspointNotificationChecker = new UpdateChecker(NotificationType.hspoint, browser);
+    const scholarshipNotificationChecker = new UpdateChecker(NotificationType.scholarship, browser);
 
     await hansungNotificationChecker.initialize();
     await academicNotificationChecker.initialize();
