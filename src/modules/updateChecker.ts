@@ -49,7 +49,7 @@ class UpdateChecker {
       });
 
       this.page = await browser.newPage();
-      await this.page.setDefaultNavigationTimeout(0);
+      await this.page.setDefaultNavigationTimeout(120000);
       await this.page.setViewport({ width: 320, height: 600 });
       await this.page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 9_0_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A404 Safari/601.1');
       await this.page.goto(this.url, {
@@ -60,7 +60,9 @@ class UpdateChecker {
       });
       await this.page.waitForSelector('tr');
       await this.page.addScriptTag({ url: 'https://code.jquery.com/jquery-3.2.1.min.js' });
+      console.log(`${this.showingType} Initialized`);
     } catch (err) {
+      console.log(`Failed to initialize ${this.showingType}`);
       console.log(err);
     }
   }
@@ -101,7 +103,7 @@ class UpdateChecker {
   }
 
   public async checkAndSendEmail() {
-    console.log('Start Checking');
+    console.log(`Start Checking ${this.showingType}`);
 
     const beforeLatestIdx = await NotficationHistoryService.getLatestIdx(this.type);
     const notificationPosts = await this.getNotifications();
@@ -124,7 +126,7 @@ class UpdateChecker {
       }
     });
 
-    console.log('End Checking');
+    console.log(`End Checking ${this.showingType}`);
   }
 }
 
