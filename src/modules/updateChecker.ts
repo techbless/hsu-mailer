@@ -51,7 +51,13 @@ class UpdateChecker {
       this.page = await browser.newPage();
       await this.page.setViewport({ width: 320, height: 600 });
       await this.page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 9_0_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A404 Safari/601.1');
-      await this.page.goto(this.url, { waitUntil: ['networkidle0', 'domcontentloaded'] });
+      await this.page.goto(this.url, {
+        timeout: 120000,
+        waitUntil: [
+          'networkidle0',
+          'domcontentloaded',
+        ],
+      });
       await this.page.waitForSelector('tr');
       await this.page.addScriptTag({ url: 'https://code.jquery.com/jquery-3.2.1.min.js' });
     } catch (err) {
@@ -61,7 +67,13 @@ class UpdateChecker {
 
   private async getNotifications() {
     // reload a page before checking new notifications.
-    await this.page.reload({ waitUntil: ['networkidle0', 'domcontentloaded'] });
+    await this.page.reload({
+      timeout: 120000,
+      waitUntil: [
+        'networkidle0',
+        'domcontentloaded',
+      ],
+    });
 
     const result = await this.page.evaluate(() => {
       const notifications: Notification[] = [];
