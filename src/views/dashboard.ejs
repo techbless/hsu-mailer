@@ -28,10 +28,10 @@
 
                 <ul class="list-unstyled components text-center">
                     <li>
-                        <a href="#">요일별 수신 거부</a>
+                        <a href="#dayofweek">요일별 수신 거부</a>
                     </li>
                     <li>
-                        <a href="#">키워드 필터링</a>
+                        <a href="#type">공지 종류별 수신 설정</a>
                     </li>
                     <li>
                         <a href="#">추후 추가 예정</a>
@@ -63,7 +63,7 @@
 
               <div class="section">
                 <div class="container-fluid">
-                  <h5>요일별 수신 거부 설정</h5><hr><br>
+                  <h5 id="dayofweek">요일별 수신 거부 설정</h5><hr><br>
                   <form method="post" action="/update/receiving_day">
                     <table width="60%" class="dayofweek mx-auto">
                       <thead>
@@ -143,7 +143,7 @@
 
               <div class="section">
                 <div class="container-fluid">
-                  <h5>공지 종류별 수신 설정</h5><hr><br>
+                  <h5 id="type">공지 종류별 수신 설정</h5><hr><br>
                   <form method="post" action="/update/receiving_type">
                     <table width="60%" class="dayofweek mx-auto">
                       <thead>
