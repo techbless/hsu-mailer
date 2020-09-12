@@ -44,13 +44,6 @@ class UpdateChecker {
 
   public async initialize() {
     try {
-      // const browser = await puppeteer.launch({
-      //   args: [
-      //     '--no-sandbox',
-      //     '--disable-setuid-sandbox',
-      //   ],
-      // });
-
       this.page = await this.browser.newPage();
       await this.page.setDefaultNavigationTimeout(120000);
       await this.page.setViewport({ width: 320, height: 600 });
