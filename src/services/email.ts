@@ -28,7 +28,7 @@ class EmailService {
   private generateParams(bcc: string[], subject: string, html: string, text: string) {
     const params: AWS.SES.SendEmailRequest = {
       Destination: {
-        ToAddresses: ['hspoint@techbless.live'], // 받는 사람 이메일 주소
+        ToAddresses: ['hspoint@techbless.me'], // 받는 사람 이메일 주소
         CcAddresses: [], // 참조
         BccAddresses: bcc, // 숨은 참조
       },
@@ -48,8 +48,8 @@ class EmailService {
           Charset: 'utf-8', // 인코딩 타입
         },
       },
-      Source: '=?UTF-8?B?7ZWc7ISx64yAIOqzteyngCDwn5SU?= <hspoint@techbless.live>', // 보낸 사람 주소
-      ReplyToAddresses: ['hspoint@techbless.live'], // 답장 받을 이메일 주소
+      Source: '=?UTF-8?B?7ZWc7ISx64yAIOqzteyngCDwn5SU?= <hspoint@techbless.me>', // 보낸 사람 주소
+      ReplyToAddresses: ['hspoint@techbless.me'], // 답장 받을 이메일 주소
     };
 
     return params;
