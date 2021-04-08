@@ -22,8 +22,7 @@ async function startAll() {
 
     const PERIOD_IN_MIN = 5;
     const PORT: number = +process.env.PORT! || 3000;
-    app.listen(PORT, (err) => {
-      if (err) throw err;
+    app.listen(PORT, () => {
       console.log('Server Started: Listen on port ', PORT);
     });
 
