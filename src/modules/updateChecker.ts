@@ -34,7 +34,7 @@ class UpdateChecker {
       this.boardId = '166';
     } else if (notificationType === NotificationType.academic) {
       this.showingType = '학사공지';
-      this.boardId = '238';
+      this.boardId = '236';
     } else if (notificationType === NotificationType.hspoint) {
       this.showingType = '비교과공지';
       this.boardId = '239';
@@ -89,7 +89,11 @@ class UpdateChecker {
       trs.each((index, element) => {
         const idx = $(element).find('td.td-num').text();
         const subjectInElement = $(element).find('td.td-subject > a');
-        const title = subjectInElement.find('strong').text().trim();
+        const title = subjectInElement.find('strong')
+          .text()
+          .replace(/\t/g, '')
+          .replace(/\n/g, '')
+          .trim();
         const link = subjectInElement.attr('href')!;
 
         notifications.push({
@@ -101,8 +105,6 @@ class UpdateChecker {
 
       return notifications;
     });
-
-    console.log(result);
 
     return result;
   }
@@ -118,7 +120,7 @@ class UpdateChecker {
     notificationPosts.forEach((elm) => {
       const { idx, title, link } = elm;
 
-      if (idx === 0) {
+      if (!idx) {
         return;
       }
 
